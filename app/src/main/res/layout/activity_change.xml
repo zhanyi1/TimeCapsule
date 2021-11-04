@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="50dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="center">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/capsule3"/>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=" Change Password"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:paddingTop="18dp"/>
+    </LinearLayout>
+
+
+
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:weightSum="375">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="125"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="18sp"
+            android:text="Username:"
+            android:textColor="#48C1F8"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="250"
+            android:layout_height="60dp"
+            android:background="@drawable/input">
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="30dp"
+                android:background="@null" />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:weightSum="375">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="125"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:text="Old password:"
+            android:textColor="#48C1F8"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="250"
+            android:layout_height="60dp"
+            android:background="@drawable/input">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:inputType="textPassword"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="60dp"
+        android:layout_gravity="center"
+        android:weightSum="375">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="125"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:text="New password: "
+            android:textColor="#48C1F8"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="250"
+            android:layout_height="60dp"
+            android:background="@drawable/input">
+
+            <EditText
+                android:id="@+id/newpassword"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:inputType="textPassword"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+
+        <Button
+            android:id="@+id/change"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="60dp"
+            android:background="@drawable/button"
+            android:text="Change"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="60dp"
+            android:background="@null"
+            android:text="Back  to  Login"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="|"
+            android:paddingLeft="30dp"/>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

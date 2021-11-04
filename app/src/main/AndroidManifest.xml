@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.timecapsule">
+    <!-- Allow networking -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Get GSM (2g), WCDMA (Unicom 3g) and other network status information -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Get wifi network status information -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Keep the CPU running, the screen and keyboard lights may be turned off for file upload and download -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Get the write permission of SD card for file upload and download -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Allows to read the phone status, used to create BmobInstallation -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- This permission is used for network positioning -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- This permission is used to access GPS location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Access to the network to request map-related business data, including map data, route planning, POI retrieval, etc. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Obtain the network status, and perform data request network conversion according to the network status switch -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Read external storage. If the developer uses the so dynamic loading function and puts the so file in the external storage area, you need to apply for this permission, otherwise you don't need -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TimeCapsule">
+        <activity
+            android:name=".activity.ChangeinforActivity"
+            android:exported="false" />
+        <activity android:name=".activity.ChangeActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.MainActivity" />
+
+        <activity android:name=".activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="cn.bmob.v3.util.BmobContentProvider"
+            android:authorities="com.example.timecapsule.BmobContentProvider">
+        </provider>
+
+        <service android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"/>
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="lnqwgUrXNSWInsUT9gP7ZLbyVGcGzVgo" />
+
+
+    </application>
+
+</manifest>
