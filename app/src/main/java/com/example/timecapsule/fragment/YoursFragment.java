@@ -203,7 +203,7 @@ public class YoursFragment extends Fragment {
                     if (e == null) {
                         classList.clear();
                         classList = object;
-                        Snackbar.make(root, "Your have "+classList.size() +" data in total ", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(root, "Your have "+classList.size() +" data in total ", Snackbar.LENGTH_SHORT).show();
 
                         //There is a very, very big bug here! ! ! ! ! ! ! !
                         //Since getData is sending a request to the server, the data reading is very slow,
@@ -316,7 +316,7 @@ public class YoursFragment extends Fragment {
                     if(deleteClassList.size()!=0){
                         deleteAll(root,deleteClassList);
                         for(MyClassroom classroom: deleteClassList){
-                            Log.e("!@#!@#!@#!@#",classroom.getClassroom().getName());
+//                            Log.e("!@#!@#!@#!@#",classroom.getClassroom().getName());
                             classroomData.get(week).get(class_number).remove(classroom);
 //                        root.findViewById(ClassRoom[week][class_number]);
                             classList.remove(classroom);

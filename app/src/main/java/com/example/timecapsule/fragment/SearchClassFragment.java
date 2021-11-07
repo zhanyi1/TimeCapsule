@@ -147,6 +147,19 @@ public class SearchClassFragment extends Fragment {
                     } else {
                         if (is_pop == false) {
                             Log.e("start: target url", "show pop window");
+                            // prepare query parameters
+                            String query_params = "/";
+                            String building = classroom.getText().toString();
+                            query_params += getCheckData(building);
+                            classList.clear();
+
+                            // send request to fetch real data from school website
+                            String raw_url = "http://10.23.6.191:5000/fetch_space_classroom";
+                            String search_url = raw_url + query_params;
+                            Log.e("start", " ============= try send request to fetch space classroom =============");
+                            Log.e("start: target url", search_url);
+                            RequestForSpaceRoom(search_url, root);
+                            //show the result
                             showPopwindow(root);
                         }
                     }
@@ -308,8 +321,8 @@ public class SearchClassFragment extends Fragment {
 
     }
 
-    private String getCheckData() {
-        String query_parameters = "all/";
+    private String getCheckData(String building) {
+        String query_parameters = building !=null ? building+"/":"all/";
         for (int i = 0; i < search_week_number.length; i++)
             query_parameters += search_week_number[i] == true ? "1" : "0";
         query_parameters += "/";
@@ -350,6 +363,36 @@ public class SearchClassFragment extends Fragment {
                 break;
             }
         }
+
+    }
+
+    private List<List<String>> getClickData(){
+        List<List<String>> clickData = new ArrayList<>();
+        for(int i =0; i <3; i++){
+            clickData.add(new ArrayList<String>());
+        }
+        for(int i=0; i < search_week_number.length; i++){
+            if(search_week_number[i]==true){
+                int j = i+1;
+                clickData.get(0).add(j+"");
+            }
+
+        }
+        for(int i=0; i < search_week.length; i++){
+            if(search_week[i]==true){
+                int j = i+1;
+                clickData.get(1).add(j+"");
+            }
+
+        }
+        for(int i=0; i < search_class.length; i++){
+            if(search_class[i]==true){
+                int j = i+1;
+                clickData.get(2).add(j+"");
+            }
+        }
+
+        return clickData;
 
     }
 
@@ -451,38 +494,6 @@ public class SearchClassFragment extends Fragment {
         TextView classroomTag = (TextView) view.findViewById(R.id.classroomTag);
         classroomTag.setText("Free Classrooms");
 
-        // prepare query parameters
-        String query_params = "/";
-        query_params += getCheckData();
-        classList.clear();
-
-        // send request to fetch real data from school website
-        String raw_url = "http://10.23.6.191:5000/fetch_space_classroom";
-        String search_url = raw_url + query_params;
-        Log.e("start", " ============= try send request to fetch space classroom =============");
-        Log.e("start: target url", search_url);
-        RequestForSpaceRoom(search_url);
-//        List<Classroom> empty_list = new ArrayList<>();
-//        classList = list_fetched == null ? empty_list : list_fetched;
-
-        //  save query data
-//        int building = random.nextInt(4) + 1;
-//        int layer = random.nextInt(6) + 1;
-//        StringBuilder str = new StringBuilder();
-//        for (int j = 0; j < 2; j++) {
-//            str.append(random.nextInt(10));
-//        }
-//        String classroom = str.toString();
-//        c.setName("T" + building + " " + layer + "" + classroom);
-//        c.save(new SaveListener<String>() {
-//            @Override
-//            public void done(String objectId, BmobException e) {
-//                if (e == null) {
-//                } else {
-//                }
-//            }
-//        });
-
 
         recyclerView = (RecyclerView) view.findViewById(R.id.contentslist);
 
@@ -493,23 +504,43 @@ public class SearchClassFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
-                if (currentUser != null) {
-                    getClassroom(classList);
-                    if (MyclassList.size() != 0) {
-                        for (Classroom classroom : MyclassList) {
-                            saveClassroom(classroom, root);
+                getClassroom(classList);
+                if (MyclassList.size() != 0) {
+                    List<List<String>> clickDate = getClickData();
+                    for(int i = 0; i < clickDate.get(0).size(); i++){
+                        String week_number = clickDate.get(0).get(i);
+//                        Log.e(">>>>",week_number);
+                        for(int j = 0; j < clickDate.get(1).size(); j++){
+                            String week = clickDate.get(1).get(j);
+//                            Log.e(">>>>",week);
+                            for(int k = 0; k <clickDate.get(2).size(); k++){
+                                String class_number = clickDate.get(2).get(k);
+//                                Log.e(">>>>",class_number);
+                                for (Classroom classroom : MyclassList) {
+                                    Classroom newClassroom = new Classroom();
+                                    newClassroom.setWeek_number(week_number);
+                                    newClassroom.setWeek(week);
+                                    newClassroom.setClass_number(class_number);
+                                    newClassroom.setName(classroom.getName());
+                                    newClassroom.save(new SaveListener<String>() {
+                                        @Override
+                                        public void done(String objectId,BmobException e) {
+                                            if(e==null){
+                                                saveClassroom(newClassroom,root);
+                                            }else{
+                                                Snackbar.make(root, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
                         }
-                        window.dismiss();
-
-                    } else if (MyclassList.size() == 0) {
-                        new AlertDialog.Builder(getContext()).setTitle("Please choose the classroom")
-                                .setNegativeButton("Yes", null)
-                                .show();
                     }
 
-                } else {
-                    new AlertDialog.Builder(getContext()).setTitle("You should log in firstly")
+                    window.dismiss();
+
+                } else if (MyclassList.size() == 0) {
+                    new AlertDialog.Builder(getContext()).setTitle("Please choose the classroom")
                             .setNegativeButton("Yes", null)
                             .show();
                 }
@@ -648,7 +679,7 @@ public class SearchClassFragment extends Fragment {
      * #    showing type: 000000000000 ~ 111111111111 [12 characters <= 0/1 for each period of a day (1 stands for selected)]
      * #@return result_list ["1st001","1st005","1st009","2st004"]
      */
-    public void RequestForSpaceRoom(String request_url) {
+    public void RequestForSpaceRoom(String request_url, View root) {
         String url = request_url;
         List<Classroom> result_list = new ArrayList<>();
         new Thread(new Runnable() {
