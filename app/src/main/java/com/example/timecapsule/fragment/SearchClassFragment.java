@@ -6,17 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,8 +26,6 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapLanguage;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
@@ -41,26 +38,30 @@ import com.example.timecapsule.db.MyClassroom;
 import com.example.timecapsule.db.User;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.v3.BmobBatch;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.datatype.BatchResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.QueryListListener;
 import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.util.V;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import android.widget.TextView;
 
 
+import org.json.JSONArray;
+
 import java.util.Map;
 import java.util.Random;
-
+import java.util.concurrent.TimeUnit;
 
 public class SearchClassFragment extends Fragment {
 
@@ -89,6 +90,7 @@ public class SearchClassFragment extends Fragment {
     private boolean isFirstLocate = true;
     private MyLocationConfiguration.LocationMode locationMode;
     private EditText classroom;
+    private TextView classroom_count;
     private String myLocation;
     private RecyclerView recyclerView;
     private Context mContext;
@@ -133,8 +135,8 @@ public class SearchClassFragment extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(User.getCurrentUser(User.class)!=null){
+                Log.e("start: target url", "search clicked");
+                if (User.getCurrentUser(User.class) != null) {
                     CheckClick();
                     if (weekNumber == false) {
                         Snackbar.make(search, "You have not selected Week Number", Snackbar.LENGTH_LONG).show();
@@ -143,18 +145,16 @@ public class SearchClassFragment extends Fragment {
                     } else if (classNumber == false) {
                         Snackbar.make(search, "You have not selected Class Number", Snackbar.LENGTH_LONG).show();
                     } else {
-                        if(is_pop == false){
+                        if (is_pop == false) {
+                            Log.e("start: target url", "show pop window");
                             showPopwindow(root);
                         }
                     }
-                }else{
+                } else {
                     new AlertDialog.Builder(getContext()).setTitle("You should log in firstly")
                             .setNegativeButton("Yes", null)
                             .show();
                 }
-
-
-
 
 
             }
@@ -308,30 +308,17 @@ public class SearchClassFragment extends Fragment {
 
     }
 
-    private List<List<Integer>> getCheckData(){
-        List<List<Integer>> checkdata = new ArrayList<>();
-        for(int i = 0; i < 3; i++){
-            checkdata.add(new ArrayList<>());
-        }
-        for (int i = 1; i < search_week_number.length+1; i++) {
-            if (search_week_number[i-1] == true) {
-                checkdata.get(0).add(i);
-            }
-        }
-
-        for (int i = 1; i < search_week.length +1; i++) {
-            if (search_week[i-1] == true) {
-                checkdata.get(1).add(i);
-            }
-        }
-
-        for (int i = 1; i < search_class.length +1; i++) {
-            if (search_class[i-1] == true) {
-                checkdata.get(2).add(i);
-            }
-        }
-
-        return  checkdata;
+    private String getCheckData() {
+        String query_parameters = "all/";
+        for (int i = 0; i < search_week_number.length; i++)
+            query_parameters += search_week_number[i] == true ? "1" : "0";
+        query_parameters += "/";
+        for (int i = 0; i < search_week.length; i++)
+            query_parameters += search_week[i] == true ? "1" : "0";
+        query_parameters += "/";
+        for (int i = 0; i < search_class.length; i++)
+            query_parameters += search_class[i] == true ? "1" : "0";
+        return query_parameters;
     }
 
     //Check whether all the buttons in the three parts of the button block are clicked
@@ -447,6 +434,8 @@ public class SearchClassFragment extends Fragment {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popwindowlayout, null);
 
+        classroom_count = (TextView) view.findViewById(R.id.classroom_count);
+
         //get the width and height getWindow().getDecorView().getWidth()
         PopupWindow window = new PopupWindow(view,
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -462,68 +451,64 @@ public class SearchClassFragment extends Fragment {
         TextView classroomTag = (TextView) view.findViewById(R.id.classroomTag);
         classroomTag.setText("Free Classrooms");
 
-        Random random = new Random();
-        int NUMBER = random.nextInt(3)+1;
-        List<List<Integer>> clickdata = new ArrayList<>();
-        clickdata = getCheckData();
+        // prepare query parameters
+        String query_params = "/";
+        query_params += getCheckData();
         classList.clear();
-        for (int i = 0; i < NUMBER; i++){
-            for(int week_number : clickdata.get(0) ){
-                for (int week : clickdata.get(1)){
-                    for(int class_number : clickdata.get(2)){
-                        Classroom c = new Classroom();
-                        c.setWeek_number(""+week_number);
-                        c.setWeek(""+week);
-                        c.setClass_number(""+class_number);
-                        classList.add(c);
-                        int building = random.nextInt(4)+1;
-                        int layer = random.nextInt(6)+1;
-                        StringBuilder str = new StringBuilder();
-                        for (int j = 0; j < 2; j++) {
-                            str.append(random.nextInt(10));
-                        }
-                        String classroom = str.toString();
-                        c.setName("T" + building +" "+ layer+""+classroom);
-                        c.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String objectId,BmobException e) {
-                                if(e==null){
-                                }else{
-                                }
-                            }
-                        });
 
-                    }
-                }
-            }
+        // send request to fetch real data from school website
+        String raw_url = "http://10.23.6.191:5000/fetch_space_classroom";
+        String search_url = raw_url + query_params;
+        Log.e("start", " ============= try send request to fetch space classroom =============");
+        Log.e("start: target url", search_url);
+        RequestForSpaceRoom(search_url);
+//        List<Classroom> empty_list = new ArrayList<>();
+//        classList = list_fetched == null ? empty_list : list_fetched;
 
-
-        }
+        //  save query data
+//        int building = random.nextInt(4) + 1;
+//        int layer = random.nextInt(6) + 1;
+//        StringBuilder str = new StringBuilder();
+//        for (int j = 0; j < 2; j++) {
+//            str.append(random.nextInt(10));
+//        }
+//        String classroom = str.toString();
+//        c.setName("T" + building + " " + layer + "" + classroom);
+//        c.save(new SaveListener<String>() {
+//            @Override
+//            public void done(String objectId, BmobException e) {
+//                if (e == null) {
+//                } else {
+//                }
+//            }
+//        });
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.contentslist);
-        displayList(classList);
+
+//        displayList(classList);
+
         ImageButton download = (ImageButton) view.findViewById(R.id.download);
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                if(currentUser != null){
+                if (currentUser != null) {
                     getClassroom(classList);
-                    if(MyclassList.size() != 0){
+                    if (MyclassList.size() != 0) {
                         for (Classroom classroom : MyclassList) {
-                            saveClassroom(classroom,root);
+                            saveClassroom(classroom, root);
                         }
                         window.dismiss();
 
-                    }else if(MyclassList.size() == 0){
+                    } else if (MyclassList.size() == 0) {
                         new AlertDialog.Builder(getContext()).setTitle("Please choose the classroom")
                                 .setNegativeButton("Yes", null)
                                 .show();
                     }
 
-                }else{
+                } else {
                     new AlertDialog.Builder(getContext()).setTitle("You should log in firstly")
                             .setNegativeButton("Yes", null)
                             .show();
@@ -533,7 +518,17 @@ public class SearchClassFragment extends Fragment {
             }
         });
 
-        //popupWindow disappearance monitoring method
+        ImageButton back = (ImageButton) view.findViewById(R.id.classroom_result_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+
+            } });
+
+
+
+                //popupWindow disappearance monitoring method
         window.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
             @Override
@@ -549,7 +544,7 @@ public class SearchClassFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         adapter = new ClassAdapter(mContext, List, R.layout.class_item);
         recyclerView.setAdapter(adapter);
-        adapter.setItemClickListener(new ClassAdapter.RecyclerViewOnItemClickListener(){
+        adapter.setItemClickListener(new ClassAdapter.RecyclerViewOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
                 adapter.setSelectItem(position);
@@ -557,18 +552,19 @@ public class SearchClassFragment extends Fragment {
         });
 
     }
+
     //Obtain user-selected data
-    private void  getClassroom(List<Classroom> List){
+    private void getClassroom(List<Classroom> List) {
         MyclassList.clear();
         map = adapter.getMap();
         for (Map.Entry<Integer, Boolean> entry : map.entrySet()) {
-            if(entry.getValue() == true){
+            if (entry.getValue() == true) {
                 MyclassList.add(List.get(entry.getKey()));
             }
         }
     }
 
-    private List<String> ALLDownloadData(View root){
+    private List<String> ALLDownloadData(View root) {
         List<String> IDs = new ArrayList<>();
         if (BmobUser.isLogin()) {
             BmobQuery<MyClassroom> query = new BmobQuery<>();
@@ -577,7 +573,7 @@ public class SearchClassFragment extends Fragment {
                 @Override
                 public void done(List<MyClassroom> object, BmobException e) {
                     if (e == null) {
-                        for(MyClassroom classroom : object){
+                        for (MyClassroom classroom : object) {
                             IDs.add(classroom.getClassroom().getObjectId());
                         }
                     } else {
@@ -597,12 +593,11 @@ public class SearchClassFragment extends Fragment {
     }
 
 
-
     private void saveClassroom(Classroom classroom, View root) {
 
-        if (currentUser.isLogin()){
+        if (currentUser.isLogin()) {
             String ClassroomID = classroom.getObjectId();
-            if(!IDs.contains(ClassroomID)){
+            if (!IDs.contains(ClassroomID)) {
                 MyClassroom myClassroom = new MyClassroom();
                 myClassroom.setClassroom(classroom);
                 myClassroom.setOwner(BmobUser.getCurrentUser(User.class));
@@ -617,15 +612,103 @@ public class SearchClassFragment extends Fragment {
                         }
                     }
                 });
-            }else{
+            } else {
                 Snackbar.make(root, "You have downloaded it already", Snackbar.LENGTH_LONG).show();
             }
 
-        }else {
+        } else {
             Snackbar.make(root, "Log in firstly", Snackbar.LENGTH_LONG).show();
         }
     }
 
+    /**
+     * This method is aim to send a request to a route => get the space classroom as return
+     * Attention:
+     * As the outline I wrote, after user select the detail time period, the application can tell him the space classroom can be used.
+     * The data comes from our school’s official website, which is true and reliable. I mock the query data and send it to activate query in official website.
+     * At first, I tried to use okHttp3 to perform whole progress (login in the school website => query classroom with processed value user provided)
+     * However, It certainly beyond what I learned in this class [especially mock login to fetch cookie data].
+     * I finally choose to divide this progress into three parts: send data => query in the school website => process value from response
+     * For the most difficult part of it, mock querying in our school website, the task is more suitable for Python in my opinion.
+     * I use Python crawler to mock Login, then query and simplify the response from our school website, return data needed finally.
+     * Since it beyonds Android Course, if you are interested to it, I'm willing to explain more details in interview. :>
+     *
+     * @param request_url It built like this:
+     *                    (domain name of my small website)
+     *                    http://www.web.zy1czz.cn:5000/fetch_space_classroom/1st/000000000000000000000010/0000001/011111111111
+     * @return
+     * @parameters_sent /<Building>/<Week>/<Day>/<Period>
+     * # Building => the No. of building in school
+     * #    showing type: 1st; 2st; 3st; 4st;
+     * # Week => one year is divided into 24 weeks
+     * #    showing type: 000000000000000000000000 ~ 111111111111111111111111 [24 characters <= 0/1 for each week of a year (1 stands for selected)]
+     * # Day => one week is divided into 7 days
+     * #    showing type: 0000000 ~ 1111111  [7 characters <= 0/1 for each day of a week (1 stands for selected)]
+     * # Period => one day is divided into 12 periods
+     * #    showing type: 000000000000 ~ 111111111111 [12 characters <= 0/1 for each period of a day (1 stands for selected)]
+     * #@return result_list ["1st001","1st005","1st009","2st004"]
+     */
+    public void RequestForSpaceRoom(String request_url) {
+        String url = request_url;
+        List<Classroom> result_list = new ArrayList<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Request build = new Request.Builder().url(url).build();
 
+                OkHttpClient client = new OkHttpClient.Builder().readTimeout(5000, TimeUnit.SECONDS).build();
+                Call call = client.newCall(build);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("Failed", "Request failed: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        final String responseData = response.body().string();
+                        Log.e("result", processResult(responseData));
+                        // process return json data
+                        try {
+                            JSONArray jsonArray = new JSONArray(responseData);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String result = jsonArray.getString(i);
+                                String processed_data = processResult(result);
+                                Classroom c = new Classroom();
+                                c.setWeek_number("");
+                                c.setWeek("");
+                                c.setClass_number("");
+                                c.setName(processed_data);
+                                result_list.add(c);
+                            }
+                            Log.e("finish", "end: " + result_list);
+                            classList = result_list;
+                            // refresh the information to tell user the space classrooms of the time he want
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                    displayList(classList);
+                                    // show the total count of all space classrooms
+                                    classroom_count.setText("Count: " + result_list.size());
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        }).start();
+    }
+
+    // data process [ mainly for converting the Chinese to English ]
+    private static String processResult(String raw_data) {
+        return raw_data.replace("1教", "1T ").replace("2教", "2T ")
+                .replace("3教", "3T ").replace("4教西", "4T West")
+                .replace("4教东", "4T East").replace("4教", "4T ")
+                .replace("信息楼东", "Information East ")
+                .replace("信北阶", "Information Hall ")
+                .replace("经管楼", "Economic ");
+    }
 
 }

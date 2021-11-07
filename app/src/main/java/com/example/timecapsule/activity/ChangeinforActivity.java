@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.timecapsule.R;
@@ -31,6 +32,7 @@ public class ChangeinforActivity extends AppCompatActivity {
     private TextView mailT;
     private EditText desT;
     private TextView usernameT;
+    private ImageView avatar;
 
     private String name = "";
     private String phone = "";
@@ -49,6 +51,7 @@ public class ChangeinforActivity extends AppCompatActivity {
         ID = currentUser.getObjectId();
 
         //Initialize user information
+        avatar = (ImageView) findViewById(R.id.icon_image);
         usernameT = (TextView) findViewById(R.id.username);
         nameT = (EditText) findViewById(R.id.new_name);
         phoneT = (EditText) findViewById(R.id.new_phone);
@@ -65,36 +68,33 @@ public class ChangeinforActivity extends AppCompatActivity {
 
         //Change user information
         Button change = (Button) findViewById(R.id.change_infor);
-        change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        change.setOnClickListener(v -> {
 
-                name = nameT.getText().toString();
-                phone = phoneT.getText().toString();
-                location = locationT.getText().toString();
-                des = desT.getText().toString();
+            name = nameT.getText().toString();
+            phone = phoneT.getText().toString();
+            location = locationT.getText().toString();
+            des = desT.getText().toString();
 
-                User user = new User();
-                user.setName(name);
-                user.setPhone(phone);
-                user.setDescription(des);
-                user.setLocation(location);
+            User user = new User();
+            user.setName(name);
+            user.setPhone(phone);
+            user.setDescription(des);
+            user.setLocation(location);
 
-                user.update(ID, new UpdateListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        if (e == null) {
-                            finish();
-                        }else{
-                            Snackbar.make(change, e.getMessage(), Snackbar.LENGTH_LONG).show();
-                        }
+            user.update(ID, new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e == null) {
+                        finish();
+                    } else {
+                        Snackbar.make(change, e.getMessage(), Snackbar.LENGTH_LONG).show();
                     }
-                });
+                }
+            });
 
-
-            }
 
         });
+
 
     }
 }
