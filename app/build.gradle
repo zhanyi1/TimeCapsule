@@ -76,4 +76,6 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.8'//PickerView
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0" //Swiperefreshlayout
 
+    implementation 'com.haibin:calendarview:3.7.1' //calendar
+
 }

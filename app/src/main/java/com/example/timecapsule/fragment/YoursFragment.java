@@ -96,7 +96,23 @@ public class YoursFragment extends Fragment {
                 classroomData.get(i).add(new ArrayList<MyClassroom>());
             }
         }
-        getData(root);
+
+        BmobQuery<MyClassroom> query = new BmobQuery<>();
+        query.addWhereEqualTo("owner", currentUser);
+        query.order("-updatedAt");
+        query.include("classroom.class_number, classroom.week_number, classroom.week, classroom.name");
+        query.findObjects(new FindListener<MyClassroom>() {
+            @Override
+            public void done(List<MyClassroom> object, BmobException e) {
+                if (e == null) {
+                    classList.clear();
+                    classList = object;
+                    setData(root, classList);
+
+                }
+            }
+
+        });
 
 
         //Change the color of the loading display
@@ -192,31 +208,30 @@ public class YoursFragment extends Fragment {
     private void getData(View root) {
 
         Log.e(">>>>","begin to get data");
-//        if (currentUser.isLogin()) {
-            BmobQuery<MyClassroom> query = new BmobQuery<>();
-            query.addWhereEqualTo("owner", currentUser);
-            query.order("-updatedAt");
-            query.include("classroom.class_number, classroom.week_number, classroom.week, classroom.name");
-            query.findObjects(new FindListener<MyClassroom>() {
-                @Override
-                public void done(List<MyClassroom> object, BmobException e) {
-                    if (e == null) {
-                        classList.clear();
-                        classList = object;
-                        Snackbar.make(root, "Your have "+classList.size() +" data in total ", Snackbar.LENGTH_SHORT).show();
+        BmobQuery<MyClassroom> query = new BmobQuery<>();
+        query.addWhereEqualTo("owner", currentUser);
+        query.order("-updatedAt");
+        query.include("classroom.class_number, classroom.week_number, classroom.week, classroom.name");
+        query.findObjects(new FindListener<MyClassroom>() {
+            @Override
+            public void done(List<MyClassroom> object, BmobException e) {
+                if (e == null) {
+                    classList.clear();
+                    classList = object;
+                    Snackbar.make(root, "Your have "+classList.size() +" data in total ", Snackbar.LENGTH_SHORT).show();
 
-                        //There is a very, very big bug here! ! ! ! ! ! ! !
-                        //Since getData is sending a request to the server, the data reading is very slow,
-                        //at this time our setData has no effect. So setData only after the success of gateData
-                        setData(root, classList);
+                    //There is a very, very big bug here! ! ! ! ! ! ! !
+                    //Since getData is sending a request to the server, the data reading is very slow,
+                    //at this time our setData has no effect. So setData only after the success of gateData
+                    setData(root, classList);
 
-                    } else {
-                        Log.e("BMOB", e.toString());
-                        Snackbar.make(root, e.getMessage(), Snackbar.LENGTH_LONG).show();
-                    }
+                } else {
+                    Log.e("BMOB", e.toString());
+                    Snackbar.make(root, e.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
+            }
 
-            });
+        });
 
 
 

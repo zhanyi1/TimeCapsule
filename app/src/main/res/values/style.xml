@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--pop菜单-->
+    <style name="mainStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:dropDownListViewStyle">@style/popmenuDivier</item>
+        <item name="android:popupBackground">@color/black</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorBackground">@color/black</item>
+    </style>
+    <!--popMenu分割线的颜色  -->
+    <style name="popmenuDivier">
+        <!--选中颜色-->
+        <item name="android:listSelector">@color/black</item>
+        <item name="android:divider">@color/blue</item>
+        <item name="android:dividerHeight">1sp</item>
+    </style>
+</resources>

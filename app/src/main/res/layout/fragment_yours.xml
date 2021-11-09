@@ -133,7 +133,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/tue_1"
@@ -145,7 +145,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/wed_1"
@@ -157,7 +157,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/thur_1"
@@ -169,7 +169,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/fri_1"
@@ -181,7 +181,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/sat_1"
@@ -193,7 +193,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/sun_1"
@@ -205,7 +205,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
 
                 </LinearLayout>
@@ -236,7 +236,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/tue_2"
@@ -247,7 +247,7 @@
                         android:textSize="13sp"
                         android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"
                         />
 
@@ -260,7 +260,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"
                         />
 
@@ -273,7 +273,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -285,7 +285,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -297,7 +297,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -309,7 +309,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -340,7 +340,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/tue_3"
@@ -351,7 +351,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -363,7 +363,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -375,7 +375,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -387,7 +387,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -399,7 +399,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -411,7 +411,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -443,7 +443,7 @@
                         android:background="@drawable/classbg"
                         android:clickable="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"/>
+                        android:textColor="#5a5759"/>
 
                     <TextView
                         android:id="@+id/tue_4"
@@ -454,7 +454,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -466,7 +466,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -478,7 +478,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -490,7 +490,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -502,7 +502,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -514,7 +514,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -544,7 +544,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -556,7 +556,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -568,7 +568,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -580,7 +580,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -592,7 +592,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -604,7 +604,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -616,7 +616,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -646,7 +646,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -658,7 +658,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -670,7 +670,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -682,7 +682,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -694,7 +694,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -706,7 +706,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -718,7 +718,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -748,7 +748,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -760,7 +760,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -772,7 +772,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -784,7 +784,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -796,7 +796,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -808,7 +808,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -820,7 +820,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -850,7 +850,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -862,7 +862,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -874,7 +874,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -886,7 +886,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -898,7 +898,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -910,7 +910,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -922,7 +922,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -952,7 +952,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -964,7 +964,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -976,7 +976,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -988,7 +988,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1000,7 +1000,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1012,7 +1012,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1024,7 +1024,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
 
@@ -1055,7 +1055,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1067,7 +1067,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1079,7 +1079,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1091,7 +1091,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1103,7 +1103,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1115,7 +1115,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1127,7 +1127,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -1158,7 +1158,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1170,7 +1170,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1182,7 +1182,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1194,7 +1194,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1206,7 +1206,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1218,7 +1218,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1230,7 +1230,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
@@ -1261,7 +1261,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1273,7 +1273,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1285,7 +1285,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1297,7 +1297,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1309,7 +1309,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
@@ -1321,7 +1321,7 @@
                         android:textSize="13sp"
                          android:background="@drawable/classbg"
                         android:clickable="true"
-                        android:textColor="@color/black"
+                        android:textColor="#5a5759"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
