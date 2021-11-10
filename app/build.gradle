@@ -74,8 +74,13 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.contrarywind:Android-PickerView:4.1.8'//PickerView
+    implementation 'com.github.duanhong169:picker-view:1.0.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0" //Swiperefreshlayout
 
     implementation 'com.haibin:calendarview:3.7.1' //calendar
+    implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+
+    implementation 'com.thoughtbot:expandablerecyclerview:1.4'
+
 
 }
