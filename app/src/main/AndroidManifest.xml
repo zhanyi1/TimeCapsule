@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Read external storage. If the developer uses the so dynamic loading function and puts the so file in the external storage area, you need to apply for this permission, otherwise you don't need -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
 
 
     <application
@@ -45,12 +46,14 @@
 
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.example.timecapsule.BmobContentProvider"></provider>
+            android:authorities="com.example.timecapsule.BmobContentProvider"/>
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
+
+        <receiver android:name="com.example.timecapsule.utils.AlarmBroadcastReceiver" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

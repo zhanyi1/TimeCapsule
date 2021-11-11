@@ -83,6 +83,7 @@
                         android:textColor="#000000"
                         android:textSize="18sp"
                         android:typeface="serif" />
+
                     <TextView
                         android:id="@+id/type_t"
                         android:layout_width="0dp"
@@ -103,7 +104,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="end"
-                        android:src="@drawable/go"/>
+                        android:src="@drawable/go" />
 
                 </LinearLayout>
 
@@ -114,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="#F6F5F5"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <RadioGroup
                     android:id="@+id/rg_1"
@@ -123,38 +124,37 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/capsuleboss"/>
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/capsuleboss" />
 
 
-                        <RadioButton
-                            android:id="@+id/rb_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:text="Boss Capsule"
-                            android:textColor="#404040"
-                            android:textSize="14sp"
-                            />
+                    <RadioButton
+                        android:id="@+id/rb_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="Boss Capsule"
+                        android:textColor="#404040"
+                        android:textSize="14sp" />
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/capsulene"/>
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/capsulene" />
 
-                        <RadioButton
-                            android:id="@+id/rb_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/rb_1"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:text="Skill Capsule"
-                            android:textColor="#404040"
-                            android:textSize="14sp" />
+                    <RadioButton
+                        android:id="@+id/rb_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/rb_1"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="Skill Capsule"
+                        android:textColor="#404040"
+                        android:textSize="14sp" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -222,6 +222,7 @@
                         android:id="@+id/location_t"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="0.5dp"
                         android:layout_weight="10"
                         android:background="@null"
                         android:clickable="true"
@@ -229,8 +230,7 @@
                         android:paddingLeft="10dp"
                         android:textColor="#000000"
                         android:textSize="18sp"
-                        android:typeface="serif"
-                        android:layout_marginBottom="0.5dp"/>
+                        android:typeface="serif" />
 
                     <ImageButton
                         android:id="@+id/location"
@@ -243,12 +243,35 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <com.baidu.mapapi.map.MapView
-                android:id="@+id/bmapView"
+
+            <LinearLayout
+                android:id="@+id/maplayout"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:clickable="true"
-                android:visibility="gone"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0.5dp">
+
+                    <com.baidu.mapapi.map.MapView
+                        android:id="@+id/bmapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:clickable="true" />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"></androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -326,18 +349,18 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/start_1"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="0.5dp"
-                android:id="@+id/start_1">
+                android:layout_marginBottom="0.5dp">
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="#0C03A9F4"
                     android:orientation="horizontal"
-                    android:weightSum="11"
-                    android:background="#0C03A9F4">
+                    android:weightSum="11">
 
                     <TextView
                         android:layout_width="0dp"
@@ -358,7 +381,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2.5"
                         android:background="@null"
-                        android:src="@drawable/clear"/>
+                        android:src="@drawable/clear" />
 
 
                     <TextView
@@ -381,10 +404,11 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="end"
-                        android:src="@drawable/go"/>
+                        android:src="@drawable/go" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
             <com.contrarywind.view.WheelView
                 android:id="@+id/wheelview"
                 android:layout_width="match_parent"
@@ -399,9 +423,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="#0C03A9F4"
                     android:orientation="horizontal"
-                    android:weightSum="11"
-                    android:background="#0C03A9F4">
+                    android:weightSum="11">
 
                     <TextView
                         android:layout_width="0dp"
@@ -411,17 +435,18 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="20dp"
                         android:text="Ends"
-                        android:textStyle="bold"
                         android:textColor="#000000"
                         android:textSize="18sp"
+                        android:textStyle="bold"
                         android:typeface="serif" />
+
                     <ImageButton
                         android:id="@+id/clear_e"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2.5"
                         android:background="@null"
-                        android:src="@drawable/clear"/>
+                        android:src="@drawable/clear" />
 
                     <TextView
                         android:id="@+id/end_t"
@@ -437,7 +462,6 @@
                         android:typeface="serif" />
 
 
-
                     <ImageButton
                         android:id="@+id/end"
                         android:layout_width="0dp"
@@ -448,7 +472,6 @@
                         android:src="@drawable/go"></ImageButton>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
 
 
             <androidx.cardview.widget.CardView
@@ -481,7 +504,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2.5"
                         android:background="@null"
-                        android:src="@drawable/clear"/>
+                        android:src="@drawable/clear" />
 
                     <TextView
                         android:id="@+id/alert_t"
@@ -497,7 +520,6 @@
                         android:typeface="serif" />
 
 
-
                     <ImageButton
                         android:id="@+id/alert"
                         android:layout_width="0dp"
@@ -505,7 +527,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="end"
-                        android:src="@drawable/go"/>
+                        android:src="@drawable/go" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -540,8 +562,8 @@
                         android:layout_weight="5"
                         android:clickable="true"
                         android:gravity="center"
-                        android:paddingLeft="20dp"
                         android:inputType="number"
+                        android:paddingLeft="20dp"
                         android:textColor="#4E4D4D"
                         android:textSize="18sp"
                         android:typeface="serif" />

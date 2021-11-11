@@ -233,10 +233,6 @@ public class YoursFragment extends Fragment {
 
         });
 
-
-
-
-
     }
 
 

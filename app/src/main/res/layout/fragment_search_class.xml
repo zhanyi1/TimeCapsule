@@ -50,7 +50,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="1.3"
                 android:background="@null"
-                android:src="@drawable/location"></ImageButton>
+                android:src="@drawable/location"/>
 
         </LinearLayout>
 
@@ -116,7 +116,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="1"></Button>
+                            android:text="1"/>
 
                         <Button
                             android:id="@+id/week2"
@@ -125,7 +125,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="2"></Button>
+                            android:text="2"/>
 
                         <Button
                             android:id="@+id/week3"
@@ -134,7 +134,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="3"></Button>
+                            android:text="3"/>
 
                         <Button
                             android:id="@+id/week4"
@@ -143,7 +143,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="4"></Button>
+                            android:text="4"/>
 
                         <Button
                             android:id="@+id/week5"
@@ -152,7 +152,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="5"></Button>
+                            android:text="5"/>
 
                         <Button
                             android:id="@+id/week6"
@@ -161,7 +161,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="6"></Button>
+                            android:text="6"/>
 
                         <Button
                             android:id="@+id/week7"
@@ -170,7 +170,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="7"></Button>
+                            android:text="7"/>
 
                         <Button
                             android:id="@+id/week8"
@@ -198,7 +198,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="9"></Button>
+                            android:text="9"/>
 
                         <Button
                             android:id="@+id/week10"
@@ -208,7 +208,7 @@
                             android:layout_weight="1"
 
                             android:background="@drawable/button2"
-                            android:text="10"></Button>
+                            android:text="10"/>
 
                         <Button
                             android:id="@+id/week11"
@@ -218,7 +218,7 @@
                             android:layout_weight="1"
 
                             android:background="@drawable/button2"
-                            android:text="11"></Button>
+                            android:text="11"/>
 
                         <Button
                             android:id="@+id/week12"
@@ -228,7 +228,7 @@
                             android:layout_weight="1"
 
                             android:background="@drawable/button2"
-                            android:text="12"></Button>
+                            android:text="12"/>
 
                         <Button
                             android:id="@+id/week13"
@@ -238,7 +238,7 @@
                             android:layout_weight="1"
 
                             android:background="@drawable/button2"
-                            android:text="13"></Button>
+                            android:text="13"/>
 
                         <Button
                             android:id="@+id/week14"
@@ -248,7 +248,7 @@
                             android:layout_weight="1"
 
                             android:background="@drawable/button2"
-                            android:text="14"></Button>
+                            android:text="14"/>
 
                         <Button
                             android:id="@+id/week15"
@@ -258,7 +258,7 @@
                             android:layout_weight="1"
 
                             android:background="@drawable/button2"
-                            android:text="15"></Button>
+                            android:text="15"/>
 
                         <Button
                             android:id="@+id/week16"
@@ -287,7 +287,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="17"></Button>
+                            android:text="17"/>
 
                         <Button
                             android:id="@+id/week18"
@@ -296,7 +296,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="18"></Button>
+                            android:text="18"/>
 
                         <Button
                             android:id="@+id/week19"
@@ -305,7 +305,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="19"></Button>
+                            android:text="19"/>
 
                         <Button
                             android:id="@+id/week20"
@@ -314,7 +314,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="20"></Button>
+                            android:text="20"/>
 
                         <Button
                             android:id="@+id/week21"
@@ -323,7 +323,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="21"></Button>
+                            android:text="21"/>
 
                         <Button
                             android:id="@+id/week22"
@@ -332,7 +332,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="22"></Button>
+                            android:text="22"/>
 
                         <Button
                             android:id="@+id/week23"
@@ -341,7 +341,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="23"></Button>
+                            android:text="23"/>
 
                         <Button
                             android:id="@+id/week24"
@@ -408,7 +408,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/button2"
                         android:tag="1"
-                        android:text="M\nO\nN"></Button>
+                        android:text="M\nO\nN"/>
 
                     <Button
                         android:id="@+id/tues"
@@ -430,7 +430,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/button2"
                         android:tag="3"
-                        android:text="W\nE\nD"></Button>
+                        android:text="W\nE\nD"/>
 
                     <Button
                         android:id="@+id/thur"
@@ -440,7 +440,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/button2"
                         android:tag="4"
-                        android:text="T\nh\nu\nr"></Button>
+                        android:text="T\nh\nu\nr"/>
 
                     <Button
                         android:id="@+id/fri"
@@ -450,7 +450,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/button2"
                         android:tag="5"
-                        android:text="F\nr\ni"></Button>
+                        android:text="F\nr\ni"/>
 
                     <Button
                         android:id="@+id/sat"
@@ -460,7 +460,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/button2"
                         android:tag="6"
-                        android:text="S\na\nt"></Button>
+                        android:text="S\na\nt"/>
 
                     <Button
                         android:id="@+id/sun"
@@ -470,7 +470,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/button2"
                         android:tag="7"
-                        android:text="S\nU\nN"></Button>
+                        android:text="S\nU\nN"/>
 
                 </LinearLayout>
 
@@ -592,7 +592,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="1"></Button>
+                            android:text="1"/>
 
                         <Button
                             android:id="@+id/class3"
@@ -601,7 +601,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="3"></Button>
+                            android:text="3"/>
 
                         <Button
                             android:id="@+id/class5"
@@ -610,7 +610,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="5"></Button>
+                            android:text="5"/>
 
                         <Button
                             android:id="@+id/class7"
@@ -619,7 +619,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="7"></Button>
+                            android:text="7"/>
 
                         <Button
                             android:id="@+id/class9"
@@ -628,7 +628,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="9"></Button>
+                            android:text="9"/>
 
                         <Button
                             android:id="@+id/class11"
@@ -637,7 +637,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="11"></Button>
+                            android:text="11"/>
 
 
                     </LinearLayout>
@@ -655,7 +655,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="2"></Button>
+                            android:text="2"/>
 
                         <Button
                             android:id="@+id/class4"
@@ -664,7 +664,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="4"></Button>
+                            android:text="4"/>
 
                         <Button
                             android:id="@+id/class6"
@@ -673,7 +673,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="6"></Button>
+                            android:text="6"/>
 
                         <Button
                             android:id="@+id/class8"
@@ -682,7 +682,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="8"></Button>
+                            android:text="8"/>
 
                         <Button
                             android:id="@+id/class10"
@@ -691,7 +691,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="10"></Button>
+                            android:text="10"/>
 
                         <Button
                             android:id="@+id/class12"
@@ -700,7 +700,7 @@
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/button2"
-                            android:text="12"></Button>
+                            android:text="12"/>
 
 
                     </LinearLayout>
