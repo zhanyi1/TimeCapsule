@@ -1,10 +1,16 @@
 package com.example.timecapsule.adapter;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.example.timecapsule.R;
 import com.example.timecapsule.db.Classroom;
 import com.example.timecapsule.db.Event;
+import com.example.timecapsule.utils.AlarmBroadcastReceiver;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,17 +31,24 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
+
 public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHolder>{
 
     private List<Event> list = new ArrayList<>();
+    private List<Event> all_list = new ArrayList<>();
     private Context mContext;
     private LayoutInflater inflater;
     private OnItemLongClickListener mOnItemLongClickListener;
+    private OnClickListener editListener;
+    private OnClickListener completeListener;
 
-    public EventAdapter(Context context, List<Event> list){
+    public EventAdapter(Context context, List<Event> list, List<Event> all_list){
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
         this.list = list;
+        this.all_list = all_list;
     }
 
 
@@ -77,22 +92,31 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event event = list.get(position);
+        long alert_time = event.getAlert();
+        int repeat = event.getRepeat();
 
-        if(event.getStart()!=0){
-            Date start = new Date();
-            start.setTime(event.getStart());
-            SimpleDateFormat formatter1 = new SimpleDateFormat("HH:mm");
-            String start_s = formatter1.format(start);
-            holder.start.setText(start_s);
+        if(!event.isIs_all_day()){
+            if(event.getStart()!=0){
+                Date start = new Date();
+                start.setTime(event.getStart());
+                SimpleDateFormat formatter1 = new SimpleDateFormat("HH:mm");
+                String start_s = formatter1.format(start);
+                holder.start.setText(start_s);
+            }
+
+            if(event.getEnd()!=0){
+                Date end = new Date();
+                end.setTime(event.getEnd());
+                SimpleDateFormat formatter2 = new SimpleDateFormat("HH:mm");
+                String end_s = formatter2.format(end);
+                holder.end.setText(end_s);
+            }
+        }else{
+            holder.start.setText("00:00");
+            holder.end.setText("24:59");
         }
 
-        if(event.getEnd()!=0){
-            Date end = new Date();
-            end.setTime(event.getEnd());
-            SimpleDateFormat formatter2 = new SimpleDateFormat("HH:mm");
-            String end_s = formatter2.format(end);
-            holder.end.setText(end_s);
-        }
+
 
         String title_s = event.getTitle();
         if(!title_s.replace(" ","").equals("")){
@@ -111,6 +135,61 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
             Glide.with(mContext).load(R.drawable.capsulene).into(holder.image);
         }
 
+        int pos = holder.getAdapterPosition();
+        //监听侧滑删除事件
+        holder.item_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new AlertDialog.Builder(mContext).setTitle("Are you sure to delete it?")
+                        .setNegativeButton("No", null)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                event.delete(new UpdateListener() {
+                                    @Override
+                                    public void done(BmobException e) {
+                                        if(e==null){
+                                            //cancel reminder
+                                            for(int i = 0; i < repeat; i++){
+                                                int id = (int) alert_time+i;
+                                                stopRemind(id);
+                                            }
+                                            all_list.remove(event);
+                                            list.remove(event);
+                                            notifyDataSetChanged();
+
+                                        }else{
+                                            Snackbar.make(holder.item_delete, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                        }
+                                    }
+
+                                });
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        holder.item_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editListener!=null){
+                    editListener.OnClick1(v, pos);
+                }
+
+            }
+        });
+
+        holder.item_complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(completeListener!=null){
+                    completeListener.OnClick2(v, pos);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -124,6 +203,10 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
         TextView start;
         TextView end;
         TextView location;
+        Button item_delete;
+        Button item_edit;
+        Button item_complete;
+
 
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -133,6 +216,9 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
             start = (TextView) itemView.findViewById(R.id.nstart);
             end = (TextView) itemView.findViewById(R.id.nend);
             location = (TextView) itemView.findViewById(R.id.location);
+            item_delete = (Button) itemView.findViewById(R.id.item_delete);
+            item_edit = (Button) itemView.findViewById(R.id.item_edit);
+            item_complete = (Button) itemView.findViewById(R.id.item_complete);
 
         }
 
@@ -145,5 +231,30 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
         mOnItemLongClickListener = onItemLongClickListener;
     }
+
+    /**
+     * 关闭提醒
+     */
+    private void stopRemind(int id){
+        Intent intent = new Intent(mContext, AlarmBroadcastReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, 0);
+        AlarmManager am = (AlarmManager) mContext.getSystemService(android.content.Context.ALARM_SERVICE);
+        //取消警报
+        am.cancel(pi);
+    }
+
+    public interface OnClickListener {
+        void OnClick1(View v, int position);
+        void OnClick2(View v, int position);
+    }
+
+    public void setEditClickListener(OnClickListener onClickListener) {
+        editListener = onClickListener;
+    }
+
+    public void setComClickListener(OnClickListener onClickListener) {
+        completeListener = onClickListener;
+    }
+
 
 }
