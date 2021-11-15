@@ -9,18 +9,16 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.timecapsule.R;
-import com.example.timecapsule.db.Classroom;
 import com.example.timecapsule.db.Event;
 import com.example.timecapsule.utils.AlarmBroadcastReceiver;
 import com.google.android.material.snackbar.Snackbar;
@@ -28,7 +26,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import cn.bmob.v3.exception.BmobException;
@@ -65,24 +62,9 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                Event event = list.get(position);
-                
+
 
             }
-        });
-
-        //Set the listener interface for long press, used to delete operation in mainavtivity
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                int position = holder.getAdapterPosition();
-
-                if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.OnItemLongClick(v,position);
-                }
-                return false;
-            }
-
         });
 
 
@@ -128,12 +110,20 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
             holder.location.setText(location_s.trim());
         }
 
-
-        if(event.getType().equals("Boss Capsule")){
-            Glide.with(mContext).load(R.drawable.capsuleboss).into(holder.image);
-        }else{
-            Glide.with(mContext).load(R.drawable.capsulene).into(holder.image);
+        if(!event.isIs_complete()){
+            if(event.getType().equals("Boss Capsule")){
+                Glide.with(mContext).load(R.drawable.boss).into(holder.image);
+            }else{
+                Glide.with(mContext).load(R.drawable.skill).into(holder.image);
+            }
+        }else {
+            if(event.getType().equals("Boss Capsule")){
+                Glide.with(mContext).load(R.drawable.boss_com1).into(holder.image);
+            }else{
+                Glide.with(mContext).load(R.drawable.skill_com).into(holder.image);
+            }
         }
+
 
         int pos = holder.getAdapterPosition();
         //监听侧滑删除事件
@@ -175,7 +165,7 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
             @Override
             public void onClick(View v) {
                 if(editListener!=null){
-                    editListener.OnClick1(v, pos);
+                    editListener.OnClickEdit(v, pos);
                 }
 
             }
@@ -185,10 +175,23 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
             @Override
             public void onClick(View v) {
                 if(completeListener!=null){
-                    completeListener.OnClick2(v, pos);
+                    completeListener.OnClickCom(v, pos);
                 }
             }
         });
+
+        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnItemLongClickListener != null) {
+                    mOnItemLongClickListener.OnItemLongClick(v,position);
+                }
+                return false;
+            }
+        });
+
+
 
     }
 
@@ -206,6 +209,7 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
         Button item_delete;
         Button item_edit;
         Button item_complete;
+        CardView layout;
 
 
         public EventViewHolder(@NonNull View itemView) {
@@ -219,6 +223,7 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
             item_delete = (Button) itemView.findViewById(R.id.item_delete);
             item_edit = (Button) itemView.findViewById(R.id.item_edit);
             item_complete = (Button) itemView.findViewById(R.id.item_complete);
+            layout = (CardView) itemView.findViewById(R.id.layout);
 
         }
 
@@ -244,8 +249,8 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
     }
 
     public interface OnClickListener {
-        void OnClick1(View v, int position);
-        void OnClick2(View v, int position);
+        void OnClickEdit(View v, int position);
+        void OnClickCom(View v, int position);
     }
 
     public void setEditClickListener(OnClickListener onClickListener) {

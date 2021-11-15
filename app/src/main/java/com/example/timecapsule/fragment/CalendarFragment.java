@@ -1,6 +1,7 @@
 package com.example.timecapsule.fragment;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -66,6 +67,7 @@ import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnDismissListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.bumptech.glide.Glide;
 import com.example.timecapsule.R;
 import com.example.timecapsule.adapter.EventAdapter;
 import com.example.timecapsule.adapter.PoiItemAdapter;
@@ -108,6 +110,7 @@ public class CalendarFragment extends Fragment implements
     private TextView mTextMonthDay;
     private TextView mTextYear;
     private TextView mTextCurrentDay;
+    private TextView mEvent;
     private CalendarView mCalendarView;
     private RelativeLayout mRelativeTool;
     private CalendarLayout mCalendarLayout;
@@ -122,6 +125,8 @@ public class CalendarFragment extends Fragment implements
     public static Typeface font;
     public static Bitmap bitmap;
     private Boolean is_pop = false;
+    private Boolean is_poevent1 = false;
+    private Boolean is_initRe = true;
     public Boolean is_start = false;
     public Boolean is_end = false;
     public Boolean is_alert = false;
@@ -139,8 +144,13 @@ public class CalendarFragment extends Fragment implements
     private LatLng locationLatLng;
     private String city;
     private GeoCoder geoCoder;
-    private View view;
+
     private EditText location_t;
+    private EditText location_t2;
+    private EditText title_t;
+    private EditText detail_t;
+    private EditText repeat_t;
+
     long start_s;
     long end_s;
     long alert_s;
@@ -150,18 +160,19 @@ public class CalendarFragment extends Fragment implements
     private RecyclerView recyclerView;
     private ImageView image;
     private View root;
+    private View view;
     private MapView mMapView;
     // 默认逆地理编码半径范围
     private static final int sDefaultRGCRadius = 500;
     private LatLng mCenter;
     private Handler mHandler;
-    private RecyclerView mRecyclerView;
+    private RecyclerView locRecyclerView;
     private PoiItemAdapter mPoiItemAdapter;
     private GeoCoder mGeoCoder = null;
     private boolean mStatusChangeByItemClick = false;
-    private EditText title_t;
-    private EditText detail_t;
-    private EditText repeat_t;
+    private LayoutInflater inflater1;
+    private PopupWindow window;
+    private TextView help;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -178,13 +189,12 @@ public class CalendarFragment extends Fragment implements
         change = root.findViewById(R.id.change);
         menu = root.findViewById(R.id.menu);
         context = getContext();
-        view = inflater.inflate(R.layout.popwindowlayout3, null);
-        location_t = (EditText) view.findViewById(R.id.location_t);
-        title_t  = (EditText) view.findViewById(R.id.title_t);
-        detail_t = (EditText) view.findViewById(R.id.details);
-        repeat_t = (EditText) view.findViewById(R.id.repeat_t);
+        mEvent = root.findViewById(R.id.new_event);
+
+
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
         image = root.findViewById(R.id.image);
+        help = root.findViewById(R.id.help);
 
 
         mCalendarView.setOnCalendarSelectListener(this);
@@ -193,7 +203,7 @@ public class CalendarFragment extends Fragment implements
         mYear = mCalendarView.getCurYear();
         mMonth = mCalendarView.getCurMonth();
         mDay = mCalendarView.getCurDay();
-        mMapView = view.findViewById(R.id.bmapView);
+
 
         getData(root);
 
@@ -201,9 +211,6 @@ public class CalendarFragment extends Fragment implements
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
         font = Typeface.createFromAsset(getContext().getAssets(), "font.TTF");
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.capsule4);
-
-        initRecyclerView(view);
-        initMap(root, mMapView);
 
 
         mCalendarView.setOnCalendarLongClickListener(new CalendarView.OnCalendarLongClickListener() {
@@ -279,10 +286,6 @@ public class CalendarFragment extends Fragment implements
         //此方法在巨大的数据量上不影响遍历性能，推荐使用
         mCalendarView.setSchemeDate(map);
 
-//        showDay();
-//        displayList(day_eventList);
-//        Log.e("<<<<",day_eventList.size()+"");
-
         return root;
     }
 
@@ -307,8 +310,12 @@ public class CalendarFragment extends Fragment implements
         mTextMonthDay.setVisibility(View.VISIBLE);
         if (is_english == false) {
             mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
+            mEvent.setText("新事件");
+            help.setText(getString(R.string.help));
         } else {
             mTextMonthDay.setText(calendar.getMonth() + "-" + calendar.getDay());
+            mEvent.setText("New Event");
+            help.setText(getString(R.string.help2));
         }
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mYear = calendar.getYear();
@@ -377,28 +384,36 @@ public class CalendarFragment extends Fragment implements
     private void showPopwindow(View root, Event event) {
 
         is_pop = true;
-        // Use layoutInflater to get View
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        is_initRe = false;
+        try {
 
-        //get the width and height getWindow().getDecorView().getWidth()
-        PopupWindow window = new PopupWindow(view,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT);
+            inflater1 = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater1.inflate(R.layout.popwindowlayout3, null);
+            location_t = (EditText) view.findViewById(R.id.location_t);
+            title_t = (EditText) view.findViewById(R.id.title_t);
+            detail_t = (EditText) view.findViewById(R.id.details);
+            repeat_t = (EditText) view.findViewById(R.id.repeat_t);
+            window = new PopupWindow(view,
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT);
+            mMapView = view.findViewById(R.id.bmapView);
+            setPopwindow(view, event);
+            initRecyclerView(view);
+            initMap(view, mMapView);
+            // Set popWindow pop-up form to be clickable
+            window.setFocusable(true);
+            // Set popWindow display and disappear animation
+            window.setAnimationStyle(R.style.mypopwindow_anim_style);
+            window.showAtLocation(root, Gravity.BOTTOM, 0, 0);
 
-        // Set popWindow pop-up form to be clickable
-        window.setFocusable(true);
-        // Set popWindow display and disappear animation
-        window.setAnimationStyle(R.style.mypopwindow_anim_style);
-        // Show at the bottom
-        window.showAtLocation(root.findViewById(R.id.change),
-                Gravity.BOTTOM, 0, 0);
-
-
-        setPopwindow(window, root, event);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void setPopwindow(PopupWindow window, View root, Event event1) {
+    private void setPopwindow(View view, Event event1) {
+
 
         ImageButton type = (ImageButton) view.findViewById(R.id.type);
         ImageButton location = (ImageButton) view.findViewById(R.id.location);
@@ -411,6 +426,7 @@ public class CalendarFragment extends Fragment implements
         CardView start_1 = (CardView) view.findViewById(R.id.start_1);
         CardView end_1 = (CardView) view.findViewById(R.id.end_1);
         ScrollView parentScrollView = (ScrollView) view.findViewById(R.id.parentScroll);
+        LinearLayout maplayout = (LinearLayout) view.findViewById(R.id.maplayout);
 
         TextView capsule_t = (TextView) view.findViewById(R.id.type_t);
         TextView alert_t = (TextView) view.findViewById(R.id.alert_t);
@@ -425,7 +441,7 @@ public class CalendarFragment extends Fragment implements
         ImageButton clear_s = (ImageButton) view.findViewById(R.id.clear_s);
         ImageButton clear_e = (ImageButton) view.findViewById(R.id.clear_e);
         ImageButton clear_a = (ImageButton) view.findViewById(R.id.clear_a);
-        LinearLayout maplayout = (LinearLayout) view.findViewById(R.id.maplayout);
+
 
         SimpleDateFormat simpleDF = new SimpleDateFormat("HH:mm:ss");
         if (event1 != null) {
@@ -435,9 +451,12 @@ public class CalendarFragment extends Fragment implements
             } else {
                 rb2.setChecked(true);
             }
+
             detail_t.setText(event1.getDetails());
             title_t.setText(event1.getTitle());
             location_t.setText(event1.getLocation());
+            repeat_t.setText(event1.getRepeat() + "");
+
             if (event1.isIs_all_day()) {
                 switch_button.setChecked(true);
                 start_1.setVisibility(View.GONE);
@@ -451,20 +470,21 @@ public class CalendarFragment extends Fragment implements
                 }
             }
 
-            repeat_t.setText(event1.getRepeat() + "");
             if (event1.getAlert() != 0) {
                 alert_t.setText(simpleDF.format(event1.getAlert()));
             }
 
         } else {
+
             title_t.setText("");
             detail_t.setText("");
             repeat_t.setText("None");
             location_t.setText("");
+
             start_t.setText("None");
             end_t.setText("None");
             alert_t.setText("None");
-            repeat_t.setText("");
+
         }
 
         date_t.setText(mYear + "-" + mMonth + "-" + mDay);
@@ -542,13 +562,14 @@ public class CalendarFragment extends Fragment implements
 
                 if (capsule.getVisibility() == View.GONE) {
                     capsule.setVisibility(View.VISIBLE);
-                    type.setImageDrawable(getResources().getDrawable(R.drawable.to));
+                    type.setImageDrawable(getResources().getDrawable(R.drawable.to, null));
                 } else {
                     capsule.setVisibility(View.GONE);
                     type.setImageDrawable(getResources().getDrawable(R.drawable.go));
                 }
             }
         });
+
 
         location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -674,7 +695,7 @@ public class CalendarFragment extends Fragment implements
                     capsule_t.setError("Please Choose One");
                 } else {
 
-                    if(event1!=null){
+                    if (event1 != null) {
                         long alert1 = event1.getAlert();
                         int repeat1 = event1.getRepeat();
 
@@ -684,11 +705,11 @@ public class CalendarFragment extends Fragment implements
 
                             @Override
                             public void done(BmobException e) {
-                                if(e==null){
-                                    for(int i = 0; i < repeat1; i++){
-                                        stopRemind((int) alert1+i);
+                                if (e == null) {
+                                    for (int i = 0; i < repeat1; i++) {
+                                        stopRemind((int) alert1 + i);
                                     }
-                                }else{
+                                } else {
                                     Snackbar.make(root, e.getMessage(), Snackbar.LENGTH_LONG).show();
                                 }
                             }
@@ -703,8 +724,9 @@ public class CalendarFragment extends Fragment implements
                     String date_s;
                     int repeat_s = 0;
                     boolean is_all_day;
-                    title_s = title_t.getText().toString();
                     type_s = capsule_t.getText().toString();
+
+                    title_s = title_t.getText().toString();
                     details_s = detail_t.getText().toString();
                     location_s = location_t.getText().toString();
                     date_s = date_t.getText().toString();
@@ -714,6 +736,7 @@ public class CalendarFragment extends Fragment implements
                     event.setDetails(details_s);
                     event.setTitle(title_s);
                     event.setDate(date_s);
+                    event.setIs_complete(false);
 
                     if (switch_button.isChecked()) {
                         is_all_day = true;
@@ -759,6 +782,7 @@ public class CalendarFragment extends Fragment implements
                         @Override
                         public void done(String objectId, BmobException e) {
                             if (e == null) {
+                                day_eventList.remove(event1);
                                 getData(root);
                                 showDay();
                                 displayList(day_eventList);
@@ -857,14 +881,14 @@ public class CalendarFragment extends Fragment implements
      * 初始化recyclerView
      */
     private void initRecyclerView(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler_view);
-        if (null == mRecyclerView) {
+        locRecyclerView = view.findViewById(R.id.recycler_view);
+        if (null == locRecyclerView) {
             return;
         }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        mRecyclerView.setLayoutManager(layoutManager);
+        locRecyclerView.setLayoutManager(layoutManager);
     }
 
 
@@ -904,7 +928,12 @@ public class CalendarFragment extends Fragment implements
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                updateUI(reverseGeoCodeResult, location_t);
+                if (is_pop) {
+                    updateUI(reverseGeoCodeResult, location_t);
+                } else if (is_poevent1) {
+                    updateUI(reverseGeoCodeResult, location_t2);
+                }
+
             }
         });
     }
@@ -933,12 +962,14 @@ public class CalendarFragment extends Fragment implements
         }
 
 
-        if (null == mPoiItemAdapter) {
-
+        if (is_initRe == false) {
+            Log.e("dsd", "=============================1");
             mPoiItemAdapter = new PoiItemAdapter(poiInfos, location);
-            mRecyclerView.setAdapter(mPoiItemAdapter);
+            locRecyclerView.setAdapter(mPoiItemAdapter);
             mPoiItemAdapter.setOnItemClickListener(this);
+            is_initRe = true;
         } else {
+            Log.e("dsd", "=============================2");
             mPoiItemAdapter.updateData(poiInfos, location);
         }
     }
@@ -1090,7 +1121,8 @@ public class CalendarFragment extends Fragment implements
         Log.e(">>>>", "begin to get data");
         BmobQuery<Event> query = new BmobQuery<>();
         query.addWhereEqualTo("owner", User.getCurrentUser());
-        query.order("-updatedAt");
+        query.order("-comTime");
+        query.order("-start");
         query.findObjects(new FindListener<Event>() {
             @Override
             public void done(List<Event> object, BmobException e) {
@@ -1122,11 +1154,6 @@ public class CalendarFragment extends Fragment implements
         recyclerView.setAdapter(event_adapter);
     }
 
-    //Implement the long-press interface to delete data
-    @Override
-    public void OnItemLongClick(View v, int position) {
-        Log.e(">>>", ">>>sdfsdf");
-    }
 
     private void showDay() {
 
@@ -1139,36 +1166,289 @@ public class CalendarFragment extends Fragment implements
         }
         if (day_eventList.size() == 0) {
             image.setVisibility(View.VISIBLE);
+            help.setVisibility(View.VISIBLE);
+
         } else {
             image.setVisibility(View.GONE);
+            help.setVisibility(View.GONE);
         }
 
         displayList(day_eventList);
 
     }
 
+
+    private void showPopWindowCom(Event event) {
+        String ObjectID = event.getObjectId();
+        is_poevent1 = true;
+        is_initRe = false;
+        // Use layoutInflater to get View
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.popwindowlayout4, null);
+
+        //get the width and height getWindow().getDecorView().getWidth()
+        PopupWindow window = new PopupWindow(view,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+        // Set popWindow pop-up form to be clickable
+        window.setFocusable(true);
+        // Set popWindow display and disappear animation
+        window.setAnimationStyle(R.style.mypopwindow_anim_style);
+        // Show at the bottom
+        window.showAtLocation(root, Gravity.BOTTOM, 0, 0);
+
+        location_t2 = (EditText) view.findViewById(R.id.location_t2);
+        ImageButton location2 = (ImageButton) view.findViewById(R.id.location2);
+        TextView time_t = (TextView) view.findViewById(R.id.time_t);
+        ImageButton time = (ImageButton) view.findViewById(R.id.time);
+        EditText note_t = (EditText) view.findViewById(R.id.notes);
+        ImageButton clear = (ImageButton) view.findViewById(R.id.clear_a);
+        ImageButton ok = (ImageButton) view.findViewById(R.id.ok);
+        ImageButton cancel = (ImageButton) view.findViewById(R.id.cancel);
+        ScrollView parentScrollView = (ScrollView) view.findViewById(R.id.parentScroll);
+        LinearLayout maplayout = (LinearLayout) view.findViewById(R.id.maplayout);
+
+        mMapView = view.findViewById(R.id.bmapView);
+        initRecyclerView(view);
+        initMap(view, mMapView);
+
+        //popupWindow disappearance monitoring method
+        window.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                is_poevent1 = false;
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String notes_s = note_t.getText().toString();
+                String com_time = time_t.getText().toString();
+                String location_s = location_t2.getText().toString();
+
+                Event event1 = new Event();
+                event1.setNotes(notes_s);
+                event1.setComTime(com_time);
+                event1.setLocation2(location_s);
+                event1.setIs_complete(true);
+                event1.update(ObjectID, new UpdateListener() {
+
+                    @Override
+                    public void done(BmobException e) {
+                        if (e == null) {
+                            getData(root);
+                            showDay();
+                            displayList(day_eventList);
+                            window.dismiss();
+                        } else {
+                        }
+                    }
+
+                });
+
+
+            }
+        });
+
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (is_alert == false) {
+                    TimePickerView pvTime1 = new TimePickerBuilder(getActivity(), (date, view) -> {
+                        SimpleDateFormat simpleDF = new SimpleDateFormat("yy/MM/dd/ HH:mm:ss");
+                        String result = simpleDF.format(date);
+                        alert_s = date.getTime();
+                        time_t.setText(result);
+                    }).setRangDate(java.util.Calendar.getInstance(), null)
+                            .setType(new boolean[]{true, true, true, true, true, true})
+                            .isDialog(true)
+                            .setLabel("", "", "", " h", " m", " s")
+                            .isCyclic(true)
+                            .setSubmitColor(Color.parseColor("#cddc39"))
+                            .setCancelColor(Color.parseColor("#cddc39"))
+                            .build();
+                    pvTime1.show();
+//                    Glide.with(context).load(R.drawable.to).into(time);
+                    time.setImageDrawable(getResources().getDrawable(R.drawable.to));
+                    is_alert = true;
+
+                    pvTime1.setOnDismissListener(new OnDismissListener() {
+                        @Override
+                        public void onDismiss(Object o) {
+                            is_alert = false;
+//                            Glide.with(context).load(R.drawable.go).into(time);
+                            time.setImageDrawable(getResources().getDrawable(R.drawable.go));
+                        }
+                    });
+                }
+
+            }
+        });
+
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                time_t.setText("None");
+            }
+        });
+
+        mMapView.getChildAt(0).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    //允许ScrollView截断点击事件，ScrollView可滑动
+                    parentScrollView.requestDisallowInterceptTouchEvent(false);
+                } else {
+                    //不允许ScrollView截断点击事件，点击事件由子View处理
+                    parentScrollView.requestDisallowInterceptTouchEvent(true);
+                }
+                return false;
+            }
+        });
+
+        location2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (maplayout.getVisibility() == View.GONE) {
+                    maplayout.setVisibility(View.VISIBLE);
+                    mMapView.onResume();
+                    location_t.setText(myLocation);
+                    location2.setImageDrawable(getResources().getDrawable(R.drawable.to));
+                } else {
+                    maplayout.setVisibility(View.GONE);
+                    mMapView.onPause();
+                    location2.setImageDrawable(getResources().getDrawable(R.drawable.go));
+                }
+            }
+        });
+
+
+    }
+
+    private void showPopWindowAll(Event event) {
+        // Use layoutInflater to get View
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.popwindowlayout5, null);
+
+        //get the width and height getWindow().getDecorView().getWidth()
+        PopupWindow window = new PopupWindow(view,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+        // Set popWindow pop-up form to be clickable
+        window.setFocusable(true);
+        // Set popWindow display and disappear animation
+        window.setAnimationStyle(R.style.mypopwindow_anim_style);
+        // Show at the bottom
+        window.showAtLocation(root, Gravity.BOTTOM, 0, 0);
+
+        TextView type_t = view.findViewById(R.id.type_t);
+        TextView detail_t = view.findViewById(R.id.details);
+        TextView title_t = view.findViewById(R.id.title_t);
+        TextView location_t = view.findViewById(R.id.location_t);
+        TextView date_t = view.findViewById(R.id.date_t);
+        TextView start_t = view.findViewById(R.id.start_t);
+        TextView end_t = view.findViewById(R.id.end_t);
+        TextView alert_t = view.findViewById(R.id.alert_t);
+        TextView repeat_t = view.findViewById(R.id.repeat_t);
+        TextView location2_t = view.findViewById(R.id.location_t2);
+        TextView time_t = view.findViewById(R.id.time_t);
+        TextView note_t = view.findViewById(R.id.notes);
+        ImageButton cancel = view.findViewById(R.id.cancel);
+
+        SimpleDateFormat simpleDF = new SimpleDateFormat("yy/MM/dd/ HH:mm:ss");
+        SimpleDateFormat simpleDF2 = new SimpleDateFormat("HH:mm:ss");
+
+        type_t.setText(event.getType());
+        detail_t.setText(event.getDetails());
+        title_t.setText(event.getTitle());
+        location_t.setText(event.getLocation());
+        date_t.setText(event.getDate());
+
+        repeat_t.setText(event.getRepeat() + "");
+        location2_t.setText(event.getLocation2());
+        time_t.setText(event.getComTime());
+        note_t.setText(event.getNotes());
+
+        if(event.getStart()!=0){
+            start_t.setText(simpleDF2.format(event.getStart()));
+        }else{
+            start_t.setText("None");
+        }
+
+        if(event.getEnd()!=0){
+            end_t.setText(simpleDF2.format(event.getEnd()));
+        }else{
+            end_t.setText("None");
+        }
+
+        if(event.getAlert()!=0){
+            alert_t.setText(simpleDF.format(event.getAlert()));
+        }else{
+            alert_t.setText("None");
+        }
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+            }
+        });
+
+
+
+    }
+
+
     @Override
-    public void OnClick1(View v, int position) {
+    public void OnItemLongClick(View v, int position) {
         Event event = day_eventList.get(position);
-        Log.e(">>>>", event.getTitle());
+        if (event.isIs_complete()) {
+            showPopWindowAll(event);
+        } else {
+            new AlertDialog.Builder(getContext()).setTitle(" You have not completed it! \n Click Edit to see the details")
+                    .setNegativeButton("ok", null)
+                    .show();
+        }
+    }
+
+    @Override
+    public void OnClickEdit(View v, int position) {
+        Event event = day_eventList.get(position);
         showPopwindow(root, event);
+
 
     }
 
     @Override
-    public void OnClick2(View v, int position) {
+    public void OnClickCom(View v, int position) {
         Event event = day_eventList.get(position);
-        showPopwindow(root, event);
+        if (event.isIs_complete()) {
+            new AlertDialog.Builder(getContext()).setTitle(" You have complete it!\n Edit anything to change its state")
+                    .setNegativeButton("ok", null)
+                    .show();
+        } else {
+            showPopWindowCom(event);
+        }
+
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mLocationClient!=null){
+        if (mLocationClient != null) {
             mLocationClient.stop();
         }
-        if(mMapView != null){
+        if (mMapView != null) {
             mMapView.onDestroy();
         }
 
@@ -1177,7 +1457,7 @@ public class CalendarFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if(mMapView!=null){
+        if (mMapView != null) {
             mMapView.onResume();
         }
 
@@ -1186,7 +1466,7 @@ public class CalendarFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
-        if(mMapView!=null){
+        if (mMapView != null) {
             mMapView.onPause();
         }
     }

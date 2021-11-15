@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/drawable/classbg.xml" value="0.18844444444444444" />
         <entry key="app/src/main/res/drawable/eventbg.xml" value="0.21296296296296297" />
         <entry key="app/src/main/res/drawable/eventbg2.xml" value="0.21296296296296297" />
+        <entry key="app/src/main/res/drawable/eventbg3.xml" value="0.22444444444444445" />
         <entry key="app/src/main/res/drawable/events.xml" value="0.15244444444444444" />
         <entry key="app/src/main/res/drawable/input.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/drawable/input2.xml" value="0.24583333333333332" />
@@ -49,6 +50,8 @@
         <entry key="app/src/main/res/layout/popwindowlayout.xml" value="0.21576576576576575" />
         <entry key="app/src/main/res/layout/popwindowlayout2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/popwindowlayout3.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/layout/popwindowlayout4.xml" value="0.10422163588390501" />
+        <entry key="app/src/main/res/layout/popwindowlayout5.xml" value="0.1" />
         <entry key="app/src/main/res/layout/single_expandable_list.xml" value="0.12252252252252252" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.18963963963963965" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.17162162162162162" />

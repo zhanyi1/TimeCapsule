@@ -12,8 +12,36 @@ public class Event extends BmobObject {
     long end;
     long alert;
     int repeat;
-    boolean is_all_day;
+    private boolean is_all_day;
     private User owner;
+    public boolean is_complete;
+    String location2;
+    String comTime;
+    String notes;
+
+    public void setLocation2(String location2) {
+        this.location2 = location2;
+    }
+
+    public void setComTime(String comTime) {
+        this.comTime = comTime;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getLocation2() {
+        return location2;
+    }
+
+    public String getComTime() {
+        return comTime;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
 
     public void setType(String type) {
         this.type = type;
@@ -93,6 +121,14 @@ public class Event extends BmobObject {
 
     public boolean isIs_all_day() {
         return is_all_day;
+    }
+
+    public boolean isIs_complete(){
+        return  is_complete;
+    }
+
+    public void setIs_complete(boolean is_complete){
+        this.is_complete = is_complete;
     }
 
     public Event setOwner(User owner){

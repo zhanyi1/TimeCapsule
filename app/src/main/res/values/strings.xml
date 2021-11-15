@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TimeCapsule</string>
+    <string name="help">  1、长按日历可以新建一个事件 \n 2、事件分为怪兽胶囊和能量胶囊 \n 3、怪兽胶囊可以用来设置ddl \n 4、技能胶囊可以用来设置学习计划 \n 5、左滑事件可以修改、完成和删除 \n 6、事件完成后胶囊头变成绿色 \n 7、完成后长按事件可以查看所有信息</string>
+    <string name= "help2">  1. Long press day to create new event\n 2. There are boss and skill capsule event\n 3. Boss capsules can be used to set ddl\n 4. Skill capsules can set study plans\n 5. Swipe left to edit, complete, delete\n 6. After completing, capsule turns green \n 7. Long press event, view all information</string>
+
 
 </resources>
