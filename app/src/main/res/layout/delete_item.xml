@@ -30,7 +30,7 @@
             android:weightSum="2">
             <CheckBox
                 android:id="@+id/is_check"
-                android:layout_width="30dp"
+                android:layout_width="60dp"
                 android:layout_height="30dp">
             </CheckBox>
             <TextView

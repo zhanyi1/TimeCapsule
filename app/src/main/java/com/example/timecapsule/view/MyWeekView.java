@@ -10,6 +10,8 @@ import com.example.timecapsule.fragment.CalendarFragment;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.WeekView;
 
+import java.util.List;
+
 /**
  * 演示一个变态需求的周视图
  * Created by huanghaibin on 2018/2/9.
@@ -54,6 +56,7 @@ public class MyWeekView extends WeekView {
      * 自定义魅族标记的圆形背景
      */
     private Paint mSchemeBasicPaint = new Paint();
+    private Paint mPaint = new Paint();
 
     private float mSchemeBaseLine;
 
@@ -63,6 +66,11 @@ public class MyWeekView extends WeekView {
         mTextPaint.setColor(0xffffffff);
         mTextPaint.setAntiAlias(true);
         mTextPaint.setFakeBoldText(true);
+
+        mPaint.setTextSize(dipToPx(context, 8));
+        mPaint.setColor(Color.parseColor("#ed5353"));
+        mPaint.setAntiAlias(true);
+        mPaint.setFakeBoldText(true);
 
 
         mSolarTermTextPaint.setColor(0xff489dff);
@@ -101,7 +109,7 @@ public class MyWeekView extends WeekView {
     @Override
     protected void onPreviewHook() {
         mSolarTermTextPaint.setTextSize(mCurMonthLunarTextPaint.getTextSize());
-        mRadius = Math.min(mItemWidth, mItemHeight) / 11 * 5;
+        mRadius = Math.min(mItemWidth, mItemHeight) / 11 * 5-7;
     }
 
 
@@ -109,6 +117,7 @@ public class MyWeekView extends WeekView {
     protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
         int cx = x + mItemWidth / 2;
         int cy = mItemHeight / 2;
+//        canvas.drawRect(cx-mItemHeight/2 +17 , cy-mItemHeight/2 +17, cx + mItemWidth/2 -17, cy + mItemHeight/2 -17, mSelectedPaint);
         canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
         return true;
     }
@@ -143,12 +152,55 @@ public class MyWeekView extends WeekView {
             canvas.drawCircle(cx, cy, mRadius, mCurrentDayPaint);
         }
 
-        if(hasScheme){
-            canvas.drawCircle(x + mItemWidth - mPadding - mCircleRadius / 2, mPadding + mCircleRadius, mCircleRadius, mSchemeBasicPaint);
+        if(hasScheme) {
 
-            mTextPaint.setColor(calendar.getSchemeColor());
+            int boss_number = 0;
+            int skill_number = 0;
+            int energy_number = 0;
+            List<Calendar.Scheme> schemes = calendar.getSchemes();
+            for(Calendar.Scheme scheme : schemes){
+                if(scheme.getScheme().equals("B")){
+                    if(boss_number==0){
+                        mSchemeBasicPaint.setColor(scheme.getShcemeColor());
+                        canvas.drawCircle(x + mItemWidth - mPadding - mCircleRadius / 2, mPadding + mCircleRadius, mCircleRadius, mSchemeBasicPaint);
+                        canvas.drawText("B",
+                                x + mItemWidth - mPadding - mCircleRadius / 2 - 10 / 2,
+                                mPadding + mSchemeBaseLine, mTextPaint);
+                    }
+                    boss_number+=1;
 
-            canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mCircleRadius, mPadding + mSchemeBaseLine, mTextPaint);
+                }else if (scheme.getScheme().equals("S")){
+                    if(skill_number==0){
+                        mSchemeBasicPaint.setColor(scheme.getShcemeColor());
+                        canvas.drawCircle(x + mItemWidth - mPadding - mCircleRadius / 2,  mPadding + mCircleRadius*3 , mCircleRadius, mSchemeBasicPaint);
+                        canvas.drawText("S",
+                                x + mItemWidth - mPadding - mCircleRadius / 2 - 10 / 2,
+                                mPadding + mSchemeBaseLine+mCircleRadius*2 , mTextPaint);
+                    }
+                    skill_number+=1;
+                }else{
+                    if(energy_number==0){
+                        mSchemeBasicPaint.setColor(scheme.getShcemeColor());
+                        canvas.drawCircle(x + mItemWidth - mPadding - mCircleRadius / 2,  mPadding + mCircleRadius*5 , mCircleRadius, mSchemeBasicPaint);
+                        canvas.drawText("E",
+                                x + mItemWidth - mPadding - mCircleRadius / 2 - 10 / 2,
+                                mPadding + mSchemeBaseLine+mCircleRadius*4, mTextPaint);
+                    }
+                    energy_number+=1;
+                }
+            }
+            if(boss_number != 0){
+                canvas.drawText("x"+boss_number, x + mItemWidth-5, mPadding + mCircleRadius*1 + 5, mPaint);
+
+            }
+
+            if(skill_number!= 0){
+                canvas.drawText("x"+skill_number, x + mItemWidth-5, mPadding + mCircleRadius*3 +5, mPaint);
+            }
+
+            if(energy_number!= 0){
+                canvas.drawText("x"+energy_number, x + mItemWidth-5, mPadding + mCircleRadius*5 +6, mPaint);
+            }
         }
 
         if (calendar.isWeekend() && calendar.isCurrentMonth()) {

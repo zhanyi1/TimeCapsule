@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="Your Event"
-            android:textColor="@color/black"
+            android:textColor="#000000"
             android:textSize="20dp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -185,7 +185,7 @@
                         android:clickable="true"
                         android:gravity="center_vertical"
                         android:paddingLeft="20dp"
-                        android:text="Location:"
+                        android:text="Location"
                         android:textColor="#000000"
                         android:textSize="18sp"
                         android:typeface="serif" />
@@ -442,7 +442,7 @@
                         android:clickable="true"
                         android:gravity="center_vertical"
                         android:paddingLeft="20dp"
-                        android:text="Location:"
+                        android:text="Location"
                         android:textColor="#000000"
                         android:textSize="18sp"
                         android:typeface="serif" />

@@ -40,6 +40,8 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
     private OnItemLongClickListener mOnItemLongClickListener;
     private OnClickListener editListener;
     private OnClickListener completeListener;
+    private OnClickListener deleteListener;
+
 
     public EventAdapter(Context context, List<Event> list, List<Event> all_list){
         this.mContext = context;
@@ -73,9 +75,8 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
+        position = holder.getAdapterPosition();
         Event event = list.get(position);
-        long alert_time = event.getAlert();
-        int repeat = event.getRepeat();
 
         if(!event.isIs_all_day()){
             if(event.getStart()!=0){
@@ -130,34 +131,9 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
         holder.item_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new AlertDialog.Builder(mContext).setTitle("Are you sure to delete it?")
-                        .setNegativeButton("No", null)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                event.delete(new UpdateListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        if(e==null){
-                                            //cancel reminder
-                                            for(int i = 0; i < repeat; i++){
-                                                int id = (int) alert_time+i;
-                                                stopRemind(id);
-                                            }
-                                            all_list.remove(event);
-                                            list.remove(event);
-                                            notifyDataSetChanged();
-
-                                        }else{
-                                            Snackbar.make(holder.item_delete, e.getMessage(), Snackbar.LENGTH_LONG).show();
-                                        }
-                                    }
-
-                                });
-                            }
-                        })
-                        .show();
+                if(deleteListener != null){
+                    deleteListener.OnClickDelete(v,pos);
+                }
             }
         });
 
@@ -184,6 +160,7 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
 
             @Override
             public boolean onLongClick(View v) {
+                int position = holder.getAdapterPosition();
                 if (mOnItemLongClickListener != null) {
                     mOnItemLongClickListener.OnItemLongClick(v,position);
                 }
@@ -237,20 +214,13 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
         mOnItemLongClickListener = onItemLongClickListener;
     }
 
-    /**
-     * 关闭提醒
-     */
-    private void stopRemind(int id){
-        Intent intent = new Intent(mContext, AlarmBroadcastReceiver.class);
-        PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, 0);
-        AlarmManager am = (AlarmManager) mContext.getSystemService(android.content.Context.ALARM_SERVICE);
-        //取消警报
-        am.cancel(pi);
-    }
+
 
     public interface OnClickListener {
         void OnClickEdit(View v, int position);
         void OnClickCom(View v, int position);
+        void OnClickDelete(View v, int position);
+
     }
 
     public void setEditClickListener(OnClickListener onClickListener) {
@@ -260,6 +230,12 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
     public void setComClickListener(OnClickListener onClickListener) {
         completeListener = onClickListener;
     }
+
+    public void setDeleteClickListener(OnClickListener onClickListener) {
+        deleteListener = onClickListener;
+    }
+
+
 
 
 }

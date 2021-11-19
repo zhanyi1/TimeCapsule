@@ -140,4 +140,19 @@ public class Event extends BmobObject {
     public User getOwner() {
         return owner;
     }
+
+    public int getYear(){
+        String[] dates = date.split("-");
+        return Integer.parseInt(dates[0]);
+    }
+
+    public int getMonth(){
+        String[] dates = date.split("-");
+        return Integer.parseInt(dates[1]);
+    }
+
+    public int getDay(){
+        String[] dates = date.split("-");
+        return Integer.parseInt(dates[2]);
+    }
 }

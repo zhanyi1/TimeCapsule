@@ -9,24 +9,32 @@ import com.example.timecapsule.fragment.CalendarFragment;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.MonthView;
 
+import java.util.List;
+
 
 public class ProgressMonthView extends MonthView {
 
-    private Paint mProgressPaint = new Paint();
-    private Paint mNoneProgressPaint = new Paint();
+    private Paint mEnergyProgressPaint = new Paint();
+    private Paint mBossProgressPaint = new Paint();
+    private Paint mSkillProgressPaint = new Paint();
     private int mRadius;
 
     public ProgressMonthView(Context context) {
         super(context);
-        mProgressPaint.setAntiAlias(true);
-        mProgressPaint.setStyle(Paint.Style.STROKE);
-        mProgressPaint.setStrokeWidth(dipToPx(context, 2.2f));
-        mProgressPaint.setColor(0xBBf54a00);
+        mEnergyProgressPaint.setAntiAlias(true);
+        mEnergyProgressPaint.setStyle(Paint.Style.STROKE);
+        mEnergyProgressPaint.setStrokeWidth(dipToPx(context, 2.2f));
+        mEnergyProgressPaint.setColor(0xFFaacc44);
 
-        mNoneProgressPaint.setAntiAlias(true);
-        mNoneProgressPaint.setStyle(Paint.Style.STROKE);
-        mNoneProgressPaint.setStrokeWidth(dipToPx(context, 2.2f));
-        mNoneProgressPaint.setColor(0x90CfCfCf);
+        mBossProgressPaint.setAntiAlias(true);
+        mBossProgressPaint.setStyle(Paint.Style.STROKE);
+        mBossProgressPaint.setStrokeWidth(dipToPx(context, 2.2f));
+        mBossProgressPaint.setColor(0xffed5353);
+
+        mSkillProgressPaint.setAntiAlias(true);
+        mSkillProgressPaint.setStyle(Paint.Style.STROKE);
+        mSkillProgressPaint.setStrokeWidth(dipToPx(context, 2.2f));
+        mSkillProgressPaint.setColor(0xFF13acf0);
     }
 
     @Override
@@ -39,24 +47,56 @@ public class ProgressMonthView extends MonthView {
     protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
         int cx = x + mItemWidth / 2;
         int cy = y + mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
+        mSelectedPaint.setStyle(Paint.Style.FILL);
+        if(hasScheme){
+            canvas.drawCircle(cx, cy, Math.min(mItemWidth, mItemHeight) / 11 * 4, mSelectedPaint);
+            DrawScheme(canvas,calendar,x,y);
+        }else{
+            canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
+        }
         return false;
+    }
+
+
+    private void DrawScheme(Canvas canvas, Calendar calendar, int x, int y){
+        int cx = x + mItemWidth / 2;
+        int cy = y + mItemHeight / 2;
+
+
+        int boss_number = 0;
+        int skill_number = 0;
+        int energy_number = 0;
+        List<Calendar.Scheme> schemes = calendar.getSchemes();
+        for(Calendar.Scheme scheme : schemes){
+            if(scheme.getScheme().equals("B")){
+                boss_number++;
+            }else if(scheme.getScheme().equals("S")){
+                skill_number++;
+            }else {
+                energy_number++;
+            }
+        }
+        int progress = energy_number * 100 / (energy_number+skill_number+boss_number);
+        int boss_pro = boss_number * 100 / (energy_number+skill_number+boss_number);
+        int skill_pro = skill_number * 100 / (energy_number+skill_number+boss_number);
+        int angle = getAngle(progress);
+        int boss_angle = getAngle(boss_pro);
+        int skill_angle = getAngle(skill_pro);
+
+        RectF progressRectF = new RectF(cx - mRadius, cy - mRadius, cx + mRadius, cy + mRadius);
+        canvas.drawArc(progressRectF, -90, angle, false, mEnergyProgressPaint);
+
+        RectF bossRectF = new RectF(cx - mRadius, cy - mRadius, cx + mRadius, cy + mRadius);
+        canvas.drawArc(bossRectF, angle - 90, boss_angle, false, mBossProgressPaint);
+
+        RectF skillRectF = new RectF(cx - mRadius, cy - mRadius, cx + mRadius, cy + mRadius);
+        canvas.drawArc(skillRectF, angle+boss_angle - 90, skill_angle, false, mSkillProgressPaint);
+
     }
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-        int cx = x + mItemWidth / 2;
-        int cy = y + mItemHeight / 2;
-
-//        int angle = getAngle(Integer.parseInt(calendar.getScheme()));
-        int angle = getAngle(40);
-
-        RectF progressRectF = new RectF(cx - mRadius, cy - mRadius, cx + mRadius, cy + mRadius);
-        canvas.drawArc(progressRectF, -90, angle, false, mProgressPaint);
-
-        RectF noneRectF = new RectF(cx - mRadius, cy - mRadius, cx + mRadius, cy + mRadius);
-        canvas.drawArc(noneRectF, angle - 90, 360 - angle, false, mNoneProgressPaint);
-
+        DrawScheme(canvas, calendar, x, y);
     }
 
     @Override

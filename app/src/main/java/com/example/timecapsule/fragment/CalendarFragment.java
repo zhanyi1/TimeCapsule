@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -98,7 +99,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-
+@SuppressWarnings("all")
 public class CalendarFragment extends Fragment implements
         CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener, BaiduMap.OnMapStatusChangeListener, PoiItemAdapter.MyOnItemClickListener
@@ -126,13 +127,14 @@ public class CalendarFragment extends Fragment implements
     public static Bitmap bitmap;
     private Boolean is_pop = false;
     private Boolean is_poevent1 = false;
-    private Boolean is_initRe = true;
+//    private Boolean is_initRe = true;
     public Boolean is_start = false;
     public Boolean is_end = false;
     public Boolean is_alert = false;
+    public Boolean is_location = false;
     private BaiduMap mBaiduMap = null;
     private boolean isFirstLocate = true;
-    private String myLocation;
+    private String myLocation = "";
     private LocationClient mLocationClient = null;
     private PoiSearch mPoiSearch = null;
     private SuggestionSearch mSuggestionSearch = null;
@@ -170,9 +172,11 @@ public class CalendarFragment extends Fragment implements
     private PoiItemAdapter mPoiItemAdapter;
     private GeoCoder mGeoCoder = null;
     private boolean mStatusChangeByItemClick = false;
-    private LayoutInflater inflater1;
     private PopupWindow window;
     private TextView help;
+    private Map<String, Calendar> mark_map = new HashMap<>();
+    private Map<String, ArrayList<Event>> day_map = new HashMap<>();
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -261,46 +265,46 @@ public class CalendarFragment extends Fragment implements
             }
         });
 
-        int year = mCalendarView.getCurYear();
-        int month = mCalendarView.getCurMonth();
-
-        Map<String, Calendar> map = new HashMap<>();
-        map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "假").toString(),
-                getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
-        map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "事").toString(),
-                getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
-        map.put(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议").toString(),
-                getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
-        map.put(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记").toString(),
-                getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
-        map.put(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记").toString(),
-                getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
-        map.put(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假").toString(),
-                getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
-        map.put(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记").toString(),
-                getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
-        map.put(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假").toString(),
-                getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
-        map.put(getSchemeCalendar(year, month, 27, 0xFF13acf0, "多").toString(),
-                getSchemeCalendar(year, month, 27, 0xFF13acf0, "多"));
-        //此方法在巨大的数据量上不影响遍历性能，推荐使用
-        mCalendarView.setSchemeDate(map);
-
         return root;
     }
 
 
-    private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {
-        Calendar calendar = new Calendar();
-        calendar.setYear(year);
-        calendar.setMonth(month);
-        calendar.setDay(day);
-        calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
-        calendar.setScheme(text);
-        calendar.addScheme(new Calendar.Scheme());
-        calendar.addScheme(0xFF008800, "假");
-        calendar.addScheme(0xFF008800, "节");
-        return calendar;
+    private void setDayMap(){
+        day_map.clear();
+        mark_map.clear();
+        for(Event event : eventList){
+            if(!day_map.containsKey(event.getDate())){
+                day_map.put(event.getDate(), new ArrayList<Event>());
+                day_map.get(event.getDate()).add(event);
+            }else{
+                day_map.get(event.getDate()).add(event);
+            }
+        }
+    }
+
+    private void setCalendar(){
+        setDayMap();
+        for(Map.Entry<String, ArrayList<Event>> entry : day_map.entrySet()){
+            Calendar calendar = new Calendar();
+            ArrayList<Event> mapValue = entry.getValue();
+            calendar.setYear(mapValue.get(0).getYear());
+            calendar.setMonth(mapValue.get(0).getMonth());
+            calendar.setDay(mapValue.get(0).getDay());
+            for(Event event : mapValue){
+                if(event.isIs_complete()){
+                    calendar.addScheme( 0xFFaacc44, "E");
+                }else{
+                    if(event.getType().equals("Boss Capsule")){
+                        calendar.addScheme(0xffed5353, "B");
+                    }else{
+                        calendar.addScheme(0xFF13acf0, "S");
+                    }
+                }
+            }
+            mark_map.put(calendar.toString(),calendar);
+
+        }
+        mCalendarView.setSchemeDate(mark_map);
     }
 
 
@@ -384,10 +388,10 @@ public class CalendarFragment extends Fragment implements
     private void showPopwindow(View root, Event event) {
 
         is_pop = true;
-        is_initRe = false;
+//        is_initRe = false;
         try {
 
-            inflater1 = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater1 = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater1.inflate(R.layout.popwindowlayout3, null);
             location_t = (EditText) view.findViewById(R.id.location_t);
             title_t = (EditText) view.findViewById(R.id.title_t);
@@ -415,32 +419,32 @@ public class CalendarFragment extends Fragment implements
     private void setPopwindow(View view, Event event1) {
 
 
-        ImageButton type = (ImageButton) view.findViewById(R.id.type);
-        ImageButton location = (ImageButton) view.findViewById(R.id.location);
-        ImageButton start = (ImageButton) view.findViewById(R.id.start);
-        ImageButton end = (ImageButton) view.findViewById(R.id.end);
-        ImageButton alert = (ImageButton) view.findViewById(R.id.alert);
-        SwitchButton switch_button = (SwitchButton) view.findViewById(R.id.switch_button);
+        ImageButton type = view.findViewById(R.id.type);
+        ImageButton location = view.findViewById(R.id.location);
+        ImageButton start = view.findViewById(R.id.start);
+        ImageButton end = view.findViewById(R.id.end);
+        ImageButton alert =  view.findViewById(R.id.alert);
+        SwitchButton switch_button =  view.findViewById(R.id.switch_button);
 
-        LinearLayout capsule = (LinearLayout) view.findViewById(R.id.capsule);
-        CardView start_1 = (CardView) view.findViewById(R.id.start_1);
-        CardView end_1 = (CardView) view.findViewById(R.id.end_1);
-        ScrollView parentScrollView = (ScrollView) view.findViewById(R.id.parentScroll);
-        LinearLayout maplayout = (LinearLayout) view.findViewById(R.id.maplayout);
+        LinearLayout capsule = view.findViewById(R.id.capsule);
+        CardView start_1 = view.findViewById(R.id.start_1);
+        CardView end_1 =  view.findViewById(R.id.end_1);
+        ScrollView parentScrollView = view.findViewById(R.id.parentScroll);
+        LinearLayout maplayout =  view.findViewById(R.id.maplayout);
 
-        TextView capsule_t = (TextView) view.findViewById(R.id.type_t);
-        TextView alert_t = (TextView) view.findViewById(R.id.alert_t);
-        TextView date_t = (TextView) view.findViewById(R.id.date_t);
-        TextView start_t = (TextView) view.findViewById(R.id.start_t);
-        TextView end_t = (TextView) view.findViewById(R.id.end_t);
-        RadioGroup nRg1 = (RadioGroup) view.findViewById(R.id.rg_1);
-        RadioButton rb1 = (RadioButton) view.findViewById(R.id.rb_1);
-        RadioButton rb2 = (RadioButton) view.findViewById(R.id.rb_2);
-        ImageButton ok = (ImageButton) view.findViewById(R.id.ok);
+        TextView capsule_t = view.findViewById(R.id.type_t);
+        TextView alert_t = view.findViewById(R.id.alert_t);
+        TextView date_t =  view.findViewById(R.id.date_t);
+        TextView start_t = view.findViewById(R.id.start_t);
+        TextView end_t = view.findViewById(R.id.end_t);
+        RadioGroup nRg1 =  view.findViewById(R.id.rg_1);
+        RadioButton rb1 = view.findViewById(R.id.rb_1);
+        RadioButton rb2 = view.findViewById(R.id.rb_2);
+        ImageButton ok =  view.findViewById(R.id.ok);
 
-        ImageButton clear_s = (ImageButton) view.findViewById(R.id.clear_s);
-        ImageButton clear_e = (ImageButton) view.findViewById(R.id.clear_e);
-        ImageButton clear_a = (ImageButton) view.findViewById(R.id.clear_a);
+        ImageButton clear_s = view.findViewById(R.id.clear_s);
+        ImageButton clear_e = view.findViewById(R.id.clear_e);
+        ImageButton clear_a =  view.findViewById(R.id.clear_a);
 
 
         SimpleDateFormat simpleDF = new SimpleDateFormat("HH:mm:ss");
@@ -574,13 +578,16 @@ public class CalendarFragment extends Fragment implements
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
                 if (maplayout.getVisibility() == View.GONE) {
                     maplayout.setVisibility(View.VISIBLE);
+                    is_location = true;
                     mMapView.onResume();
                     location_t.setText(myLocation);
                     location.setImageDrawable(getResources().getDrawable(R.drawable.to));
                 } else {
                     maplayout.setVisibility(View.GONE);
+                    is_location = false;
                     mMapView.onPause();
                     location.setImageDrawable(getResources().getDrawable(R.drawable.go));
                 }
@@ -928,9 +935,9 @@ public class CalendarFragment extends Fragment implements
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                if (is_pop) {
+                if (is_pop && is_location) {
                     updateUI(reverseGeoCodeResult, location_t);
-                } else if (is_poevent1) {
+                } else if (is_poevent1 && is_location) {
                     updateUI(reverseGeoCodeResult, location_t2);
                 }
 
@@ -962,16 +969,16 @@ public class CalendarFragment extends Fragment implements
         }
 
 
-        if (is_initRe == false) {
+//        if (!is_initRe) {
             Log.e("dsd", "=============================1");
             mPoiItemAdapter = new PoiItemAdapter(poiInfos, location);
             locRecyclerView.setAdapter(mPoiItemAdapter);
             mPoiItemAdapter.setOnItemClickListener(this);
-            is_initRe = true;
-        } else {
-            Log.e("dsd", "=============================2");
-            mPoiItemAdapter.updateData(poiInfos, location);
-        }
+//            is_initRe = true;
+//        } else {
+//            Log.e("dsd", "=============================2");
+//            mPoiItemAdapter.updateData(poiInfos, location);
+//        }
     }
 
     @Override
@@ -1130,9 +1137,10 @@ public class CalendarFragment extends Fragment implements
                     eventList.clear();
                     eventList = object;
                     Snackbar.make(root, "Your have " + eventList.size() + " data in total ", Snackbar.LENGTH_SHORT).show();
-
+                    setCalendar();
                     showDay();
                     displayList(day_eventList);
+
 
                 } else {
                     Log.e("BMOB", e.toString());
@@ -1150,6 +1158,7 @@ public class CalendarFragment extends Fragment implements
         event_adapter = new EventAdapter(getContext(), List, eventList);
         event_adapter.setOnItemLongClickListener(this);
         event_adapter.setComClickListener(this);
+        event_adapter.setDeleteClickListener(this);
         event_adapter.setEditClickListener(this);
         recyclerView.setAdapter(event_adapter);
     }
@@ -1181,7 +1190,7 @@ public class CalendarFragment extends Fragment implements
     private void showPopWindowCom(Event event) {
         String ObjectID = event.getObjectId();
         is_poevent1 = true;
-        is_initRe = false;
+//        is_initRe = false;
         // Use layoutInflater to get View
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popwindowlayout4, null);
@@ -1320,12 +1329,14 @@ public class CalendarFragment extends Fragment implements
             public void onClick(View v) {
                 if (maplayout.getVisibility() == View.GONE) {
                     maplayout.setVisibility(View.VISIBLE);
+                    is_location = true;
                     mMapView.onResume();
-                    location_t.setText(myLocation);
+                    location_t2.setText(myLocation);
                     location2.setImageDrawable(getResources().getDrawable(R.drawable.to));
                 } else {
                     maplayout.setVisibility(View.GONE);
                     mMapView.onPause();
+                    is_location = false;
                     location2.setImageDrawable(getResources().getDrawable(R.drawable.go));
                 }
             }
@@ -1403,8 +1414,6 @@ public class CalendarFragment extends Fragment implements
             }
         });
 
-
-
     }
 
 
@@ -1440,6 +1449,37 @@ public class CalendarFragment extends Fragment implements
         }
 
 
+    }
+
+    @Override
+    public void OnClickDelete(View v, int position) {
+        Event event = day_eventList.get(position);
+        long alert_time = event.getAlert();
+        int repeat = event.getRepeat();
+        new AlertDialog.Builder(getContext()).setTitle("Are you sure to delete it?")
+                .setNegativeButton("No", null)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        event.delete(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if(e==null){
+                                    getData(root);
+                                    showDay();
+                                    displayList(day_eventList);
+                                    //cancel reminder
+                                    for(int i = 0; i < event.getRepeat(); i++){
+                                        int id = (int) alert_time+i;
+                                        stopRemind(id);
+                                    }
+                                }
+                            }
+
+                        });
+                    }
+                })
+                .show();
     }
 
     @Override

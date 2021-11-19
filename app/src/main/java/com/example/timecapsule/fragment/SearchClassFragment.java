@@ -149,12 +149,13 @@ public class SearchClassFragment extends Fragment {
                             Log.e("start: target url", "show pop window");
                             // prepare query parameters
                             String query_params = "/";
-                            String building = classroom.getText().toString();
+                            String building = classroom.getText().toString().replace(" ","");
                             query_params += getCheckData(building);
                             classList.clear();
 
                             // send request to fetch real data from school website
-                            String raw_url = "http://10.23.6.191:5000/fetch_space_classroom";
+                            // URL
+                            String raw_url = "http://10.23.7.81:5000/fetch_space_classroom";
                             String search_url = raw_url + query_params;
                             Log.e("start", " ============= try send request to fetch space classroom =============");
                             Log.e("start: target url", search_url);
@@ -322,7 +323,8 @@ public class SearchClassFragment extends Fragment {
     }
 
     private String getCheckData(String building) {
-        String query_parameters = building !=null ? building+"/":"all/";
+        Log.e("uhuh=========",building+"==");
+        String query_parameters = building.equals("") ? "all/":building+"/";
         for (int i = 0; i < search_week_number.length; i++)
             query_parameters += search_week_number[i] == true ? "1" : "0";
         query_parameters += "/";
