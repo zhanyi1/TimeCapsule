@@ -82,5 +82,8 @@ dependencies {
 
     implementation 'com.thoughtbot:expandablerecyclerview:1.4'
 
+    // Github 图表库
+    implementation 'com.github.PhilJay:MPAndroidChart:3.1.0'
+
 
 }

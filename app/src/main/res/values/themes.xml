@@ -3,7 +3,7 @@
     <style name="Theme.TimeCapsule" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
 <!--        <item name="android:windowAnimationStyle">@style/activityAnimation</item>-->
-        <item name="colorPrimary">#6CCCF8</item>
+<!--        <item name="colorPrimary">#6CCCF8</item>-->
         <item name="colorPrimaryVariant">#4F009DE4</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -13,6 +13,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="colorPrimary">@color/colorPrimaryLightBlue</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkLightBlue</item>
+        <item name="colorAccent">@color/colorAccentLightBlue</item>
     </style>
 
     <style name="activityAnimation" parent="@android:style/Animation">
@@ -20,7 +24,6 @@
         <item name="android:activityOpenExitAnimation">@anim/slide_up</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_down</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_up</item>
-
     </style>
 
     <style name="mypopwindow_anim_style">

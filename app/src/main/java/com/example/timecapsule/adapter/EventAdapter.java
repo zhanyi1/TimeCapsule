@@ -36,7 +36,6 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
     private List<Event> list = new ArrayList<>();
     private List<Event> all_list = new ArrayList<>();
     private Context mContext;
-    private LayoutInflater inflater;
     private OnItemLongClickListener mOnItemLongClickListener;
     private OnClickListener editListener;
     private OnClickListener completeListener;
@@ -45,7 +44,6 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
 
     public EventAdapter(Context context, List<Event> list, List<Event> all_list){
         this.mContext = context;
-        this.inflater = LayoutInflater.from(context);
         this.list = list;
         this.all_list = all_list;
     }
@@ -59,8 +57,6 @@ public class EventAdapter extends  RecyclerView.Adapter<EventAdapter.EventViewHo
         final EventViewHolder holder = new EventViewHolder(view);
         holder.itemView.setOnClickListener(new View.OnClickListener(){
 
-            //Set the click event for the recyclerView, this is a normal click,
-            //if it is a draft, enter the editing mode, if it is a sent mail, enter the reading mode
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();

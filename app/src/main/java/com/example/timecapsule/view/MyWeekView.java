@@ -12,49 +12,19 @@ import com.haibin.calendarview.WeekView;
 
 import java.util.List;
 
-/**
- * 演示一个变态需求的周视图
- * Created by huanghaibin on 2018/2/9.
- */
+
 
 public class MyWeekView extends WeekView {
 
 
     private int mRadius;
-
-    /**
-     * 自定义魅族标记的文本画笔
-     */
     private Paint mTextPaint = new Paint();
-
-
-    /**
-     * 24节气画笔
-     */
     private Paint mSolarTermTextPaint = new Paint();
-
-    /**
-     * 背景圆点
-     */
     private Paint mPointPaint = new Paint();
-
-    /**
-     * 今天的背景色
-     */
     private Paint mCurrentDayPaint = new Paint();
-
-
-    /**
-     * 圆点半径
-     */
     private float mPointRadius;
-
     private int mPadding;
-
     private float mCircleRadius;
-    /**
-     * 自定义魅族标记的圆形背景
-     */
     private Paint mSchemeBasicPaint = new Paint();
     private Paint mPaint = new Paint();
 
@@ -248,13 +218,7 @@ public class MyWeekView extends WeekView {
         }
     }
 
-    /**
-     * dp转px
-     *
-     * @param context context
-     * @param dpValue dp
-     * @return px
-     */
+
     private static int dipToPx(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);

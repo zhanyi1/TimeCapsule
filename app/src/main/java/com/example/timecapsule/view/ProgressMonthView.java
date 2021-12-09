@@ -135,24 +135,10 @@ public class ProgressMonthView extends MonthView {
         }
     }
 
-    /**
-     * 获取角度
-     *
-     * @param progress 进度
-     * @return 获取角度
-     */
+
     private static int getAngle(int progress) {
         return (int) (progress * 3.6);
     }
-
-
-    /**
-     * dp转px
-     *
-     * @param context context
-     * @param dpValue dp
-     * @return px
-     */
     private static int dipToPx(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);

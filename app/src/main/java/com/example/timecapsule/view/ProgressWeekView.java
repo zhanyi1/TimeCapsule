@@ -11,10 +11,6 @@ import com.haibin.calendarview.WeekView;
 
 import java.util.List;
 
-/**
- * 精美进度风格
- * Created by huanghaibin on 2018/2/8.
- */
 
 public class ProgressWeekView extends WeekView {
 
@@ -144,25 +140,11 @@ public class ProgressWeekView extends WeekView {
 
     }
 
-    /**
-     * 获取角度
-     *
-     * @param progress 进度
-     * @return 获取角度
-     */
+
     private static int getAngle(int progress) {
         return (int) (progress * 3.6);
     }
 
-
-    /**
-     * dp转px
-     *
-     * @param context context
-     * @param dpValue dp
-     * @return px
-     */
-    @SuppressWarnings("all")
     private static int dipToPx(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);

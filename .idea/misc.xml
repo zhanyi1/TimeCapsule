@@ -17,6 +17,7 @@
         <entry key="app/src/main/res/drawable/button_clear_clicked.xml" value="0.265625" />
         <entry key="app/src/main/res/drawable/button_clear_selector.xml" value="0.265625" />
         <entry key="app/src/main/res/drawable/classbg.xml" value="0.18844444444444444" />
+        <entry key="app/src/main/res/drawable/day_selector2.xml" value="0.22297297297297297" />
         <entry key="app/src/main/res/drawable/eventbg.xml" value="0.21296296296296297" />
         <entry key="app/src/main/res/drawable/eventbg2.xml" value="0.21296296296296297" />
         <entry key="app/src/main/res/drawable/eventbg3.xml" value="0.22444444444444445" />
@@ -24,8 +25,17 @@
         <entry key="app/src/main/res/drawable/input.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/drawable/input2.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/drawable/location.xml" value="0.21333333333333335" />
+        <entry key="app/src/main/res/drawable/month_selector.xml" value="0.20833333333333334" />
+        <entry key="app/src/main/res/drawable/month_selector2.xml" value="0.22297297297297297" />
         <entry key="app/src/main/res/drawable/popwindow.xml" value="0.15833333333333333" />
+        <entry key="app/src/main/res/drawable/tb_income_selector.xml" value="0.21851851851851853" />
+        <entry key="app/src/main/res/drawable/tb_outcome_selector.xml" value="0.2648888888888889" />
+        <entry key="app/src/main/res/drawable/tb_text_selector.xml" value="0.2222222222222222" />
+        <entry key="app/src/main/res/drawable/text_non_selector.xml" value="0.22297297297297297" />
         <entry key="app/src/main/res/drawable/time.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/drawable/week_selector.xml" value="0.218018018018018" />
+        <entry key="app/src/main/res/drawable/year_selector.xml" value="0.22297297297297297" />
+        <entry key="app/src/main/res/drawable/year_selector2.xml" value="0.22297297297297297" />
         <entry key="app/src/main/res/layout/activity_change.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_changeinfor.xml" value="0.2028985507246377" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.11930091185410334" />
@@ -38,7 +48,7 @@
         <entry key="app/src/main/res/layout/expandable_list_item.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.1470167423873523" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.11846846846846847" />
-        <entry key="app/src/main/res/layout/fragment_notice.xml" value="0.2028985507246377" />
+        <entry key="app/src/main/res/layout/fragment_notice.xml" value="0.3306264501160093" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.1495601173020528" />
         <entry key="app/src/main/res/layout/fragment_search_class.xml" value="0.17927927927927928" />
         <entry key="app/src/main/res/layout/fragment_yours.xml" value="0.13018018018018018" />
@@ -54,6 +64,7 @@
         <entry key="app/src/main/res/layout/popwindowlayout5.xml" value="0.1" />
         <entry key="app/src/main/res/layout/single_expandable_list.xml" value="0.12252252252252252" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.18963963963963965" />
+        <entry key="app/src/main/res/menu/header_menu_pop.xml" value="0.209009009009009" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.17162162162162162" />
         <entry key="app/src/main/res/menu/nav_item.xml" value="0.1" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.2755208333333333" />

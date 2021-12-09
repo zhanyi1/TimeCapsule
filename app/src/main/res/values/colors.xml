@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FFC107</color>
     <color name="blue">#6cccf8</color>
+    <color name="colorPrimaryLightBlue">#6cccf8</color>
+    <color name="colorPrimaryDarkLightBlue">#6cccf8</color>
+    <color name="colorAccentLightBlue">#6cccf8</color>
 </resources>

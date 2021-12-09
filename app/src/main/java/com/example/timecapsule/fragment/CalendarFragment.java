@@ -127,7 +127,7 @@ public class CalendarFragment extends Fragment implements
     public static Bitmap bitmap;
     private Boolean is_pop = false;
     private Boolean is_poevent1 = false;
-//    private Boolean is_initRe = true;
+    private Boolean is_initRe = false;
     public Boolean is_start = false;
     public Boolean is_end = false;
     public Boolean is_alert = false;
@@ -156,7 +156,7 @@ public class CalendarFragment extends Fragment implements
     long start_s;
     long end_s;
     long alert_s;
-    private List<Event> eventList = new ArrayList<>();
+    public static List<Event> eventList = new ArrayList<>();
     private List<Event> day_eventList = new ArrayList<>();
     private EventAdapter event_adapter;
     private RecyclerView recyclerView;
@@ -164,7 +164,7 @@ public class CalendarFragment extends Fragment implements
     private View root;
     private View view;
     private MapView mMapView;
-    // 默认逆地理编码半径范围
+    // Default inverse geocoding radius range
     private static final int sDefaultRGCRadius = 500;
     private LatLng mCenter;
     private Handler mHandler;
@@ -341,9 +341,9 @@ public class CalendarFragment extends Fragment implements
 
     private void showPopupMenu(Context context, View ancher) {
         PopupMenu popupMenu = new PopupMenu(context, ancher);
-        //引入菜单资源
+        //Introduce menu resources
         popupMenu.inflate(R.menu.header_menu_pop);
-        //菜单项的监听
+        //Monitor of menu items
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -375,7 +375,7 @@ public class CalendarFragment extends Fragment implements
             }
         });
 
-        //显示PopupMenu
+        //Display PopupMenu
         popupMenu.show();
     }
 
@@ -388,7 +388,7 @@ public class CalendarFragment extends Fragment implements
     private void showPopwindow(View root, Event event) {
 
         is_pop = true;
-//        is_initRe = false;
+        is_initRe = false;
         try {
 
             LayoutInflater inflater1 = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -550,10 +550,10 @@ public class CalendarFragment extends Fragment implements
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    //允许ScrollView截断点击事件，ScrollView可滑动
+                    //Allow ScrollView to cut off the click event, ScrollView can slide
                     parentScrollView.requestDisallowInterceptTouchEvent(false);
                 } else {
-                    //不允许ScrollView截断点击事件，点击事件由子View处理
+                    // ScrollView is not allowed to cut off the click event, the click event is handled by the child View
                     parentScrollView.requestDisallowInterceptTouchEvent(true);
                 }
                 return false;
@@ -569,7 +569,7 @@ public class CalendarFragment extends Fragment implements
                     type.setImageDrawable(getResources().getDrawable(R.drawable.to, null));
                 } else {
                     capsule.setVisibility(View.GONE);
-                    type.setImageDrawable(getResources().getDrawable(R.drawable.go));
+                    type.setImageDrawable(getResources().getDrawable(R.drawable.go,null));
                 }
             }
         });
@@ -845,7 +845,7 @@ public class CalendarFragment extends Fragment implements
             return;
         }
 
-        // 设置初始中心点为北京
+        // Set the initial center point to Beijing
         mCenter = new LatLng(39.963175, 116.400244);
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(mCenter, 16);
         mBaiduMap.setMapStatus(mapStatusUpdate);
@@ -860,7 +860,7 @@ public class CalendarFragment extends Fragment implements
     }
 
     /**
-     * 创建地图中心点marker
+     * Create a map center point marker
      */
     private void createCenterMarker() {
         Projection projection = mBaiduMap.getProjection();
@@ -885,7 +885,7 @@ public class CalendarFragment extends Fragment implements
     }
 
     /**
-     * 初始化recyclerView
+     * Initialize recyclerView
      */
     private void initRecyclerView(View view) {
         locRecyclerView = view.findViewById(R.id.recycler_view);
@@ -900,7 +900,7 @@ public class CalendarFragment extends Fragment implements
 
 
     /**
-     * 逆地理编码请求
+     * Reverse geocoding request
      *
      * @param latLng
      */
@@ -935,9 +935,9 @@ public class CalendarFragment extends Fragment implements
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                if (is_pop && is_location) {
+                if (is_pop) {
                     updateUI(reverseGeoCodeResult, location_t);
-                } else if (is_poevent1 && is_location) {
+                } else if (is_poevent1) {
                     updateUI(reverseGeoCodeResult, location_t2);
                 }
 
@@ -946,7 +946,7 @@ public class CalendarFragment extends Fragment implements
     }
 
     /**
-     * 更新UI
+     * Update UI
      *
      * @param reverseGeoCodeResult
      */
@@ -969,16 +969,16 @@ public class CalendarFragment extends Fragment implements
         }
 
 
-//        if (!is_initRe) {
+        if (!is_initRe) {
             Log.e("dsd", "=============================1");
             mPoiItemAdapter = new PoiItemAdapter(poiInfos, location);
             locRecyclerView.setAdapter(mPoiItemAdapter);
             mPoiItemAdapter.setOnItemClickListener(this);
-//            is_initRe = true;
-//        } else {
-//            Log.e("dsd", "=============================2");
-//            mPoiItemAdapter.updateData(poiInfos, location);
-//        }
+            is_initRe = true;
+        } else {
+            Log.e("dsd", "=============================2");
+            mPoiItemAdapter.updateData(poiInfos, location);
+        }
     }
 
     @Override
@@ -1007,7 +1007,7 @@ public class CalendarFragment extends Fragment implements
     public void onMapStatusChangeFinish(MapStatus mapStatus) {
         LatLng newCenter = mapStatus.target;
 
-        // 如果是点击poi item导致的地图状态更新，则不用做后面的逆地理请求，
+        // If the map status is updated by clicking the poi item, you don’t need to do the reverse geography request later.
         if (mStatusChangeByItemClick) {
             if (!isLatlngEqual(mCenter, newCenter)) {
                 mCenter = newCenter;
@@ -1062,19 +1062,19 @@ public class CalendarFragment extends Fragment implements
             stringBuilder.append(location.getAddrStr());
             myLocation = stringBuilder.toString();
 
-            //获取坐标，待会用于POI信息点与定位的距离
+            //Get the coordinates, which will be used for the distance between the POI information point and the positioning
             locationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            //获取城市，待会用于POISearch
+            //Get the city and use it in POISearch later
             city = location.getCity();
-            //创建GeoCoder实例对象
+            //Create GeoCoder instance object
             geoCoder = GeoCoder.newInstance();
-            //发起反地理编码请求(经纬度->地址信息)
+            //Initiate an anti-geocoding request (latitude and longitude -> address information)
             ReverseGeoCodeOption reverseGeoCodeOption = new ReverseGeoCodeOption();
-            //设置反地理编码位置坐标
+            //Set the coordinates of the anti-geocoding location
             reverseGeoCodeOption.location(new LatLng(location.getLatitude(), location.getLongitude()));
             geoCoder.reverseGeoCode(reverseGeoCodeOption);
 
-            //设置查询结果监听者
+            //Set the query result listener
             geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
                 @Override
                 public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
@@ -1112,13 +1112,12 @@ public class CalendarFragment extends Fragment implements
     }
 
     /**
-     * 关闭提醒
+     * Close reminder
      */
     private void stopRemind(int id) {
         Intent intent = new Intent(getContext(), AlarmBroadcastReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
         AlarmManager am = (AlarmManager) getActivity().getSystemService(android.content.Context.ALARM_SERVICE);
-        //取消警报
         am.cancel(pi);
     }
 
@@ -1136,7 +1135,6 @@ public class CalendarFragment extends Fragment implements
                 if (e == null) {
                     eventList.clear();
                     eventList = object;
-                    Snackbar.make(root, "Your have " + eventList.size() + " data in total ", Snackbar.LENGTH_SHORT).show();
                     setCalendar();
                     showDay();
                     displayList(day_eventList);
@@ -1190,7 +1188,7 @@ public class CalendarFragment extends Fragment implements
     private void showPopWindowCom(Event event) {
         String ObjectID = event.getObjectId();
         is_poevent1 = true;
-//        is_initRe = false;
+        is_initRe = false;
         // Use layoutInflater to get View
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popwindowlayout4, null);

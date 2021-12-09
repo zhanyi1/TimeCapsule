@@ -17,9 +17,11 @@ import com.example.timecapsule.R;
 
 import java.util.List;
 
+
+//REFERENCE: BaiDu SDK website
 public class PoiItemAdapter extends RecyclerView.Adapter {
-    private List<PoiInfo> mPoiInfos; // poi信息
-    private int mCurSelectPos = 0; // 当前选中的item pos
+    private List<PoiInfo> mPoiInfos; // poi information
+    private int mCurSelectPos = 0; // currently selected item pos
     private EditText location_t;
 
     private MyOnItemClickListener mOnItemClickListener;
@@ -92,8 +94,8 @@ public class PoiItemAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * 由于Recyclerview的ViewHodler复用逻辑，导致滑动后，下一个绑定的item复用ViewHolder，会复用前一个item的选中状态
-     * 这里需要对item的选中状态做下修正
+     * Due to the ViewHodler reuse logic of Recyclerview, after sliding, the next bound item reuses ViewHolder and reuses the selected state of the previous item
+     * Here you need to make corrections to the selected state of the item
      *
      * @param myViewHolder
      * @param position
@@ -107,7 +109,7 @@ public class PoiItemAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * 绑定ViewHolder信息
+     * Bind ViewHolder information
      *
      * @param viewHolder
      * @param position
@@ -167,7 +169,7 @@ public class PoiItemAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * 获取item数目
+     * Get the number of items
      */
     @Override
     public int getItemCount() {
@@ -179,7 +181,7 @@ public class PoiItemAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * 定义item点击回调接口
+     * Define the item click callback interface
      */
     public interface MyOnItemClickListener {
         void onItemClick(int position, PoiInfo poiInfo);
