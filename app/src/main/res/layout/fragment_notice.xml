@@ -249,8 +249,24 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/new_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/events"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:text="Your Progress  (A WEEK)"
+        android:textColor="#3A3A3A"
+        android:textSize="15sp"
+        android:textStyle="bold"/>
 
-
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="10dp"/>
 
 
 
